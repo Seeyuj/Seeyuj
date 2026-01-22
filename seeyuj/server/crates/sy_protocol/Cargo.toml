@@ -1,0 +1,9 @@
+[package]
+name = "sy_protocol"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sy_types.workspace = true
+
+[build-dependencies]

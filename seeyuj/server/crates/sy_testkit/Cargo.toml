@@ -1,0 +1,9 @@
+[package]
+name = "sy_testkit"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sy_types.workspace = true
+sy_api.workspace = true
+sy_core.workspace = true

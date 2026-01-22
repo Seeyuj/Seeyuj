@@ -1,0 +1,12 @@
+[package]
+name = "server_d"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "server_d"
+path = "src/main.rs"
+
+[dependencies]
+sy_config.workspace = true
+sy_loader.workspace = true

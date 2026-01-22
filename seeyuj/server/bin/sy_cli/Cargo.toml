@@ -1,0 +1,12 @@
+[package]
+name = "sy_cli"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "sy_cli"
+path = "src/main.rs"
+
+[dependencies]
+sy_config.workspace = true
+sy_tools.workspace = true

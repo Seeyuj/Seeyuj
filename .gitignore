@@ -1,0 +1,22 @@
+# Rust
+target/
+Cargo.lock
+
+# Données de persistance
+data/
+*.db
+*.rocksdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

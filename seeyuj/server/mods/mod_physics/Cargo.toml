@@ -1,0 +1,8 @@
+[package]
+name = "mod_physics"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sy_types.workspace = true
+sy_api.workspace = true
