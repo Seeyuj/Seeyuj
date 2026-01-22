@@ -2,7 +2,7 @@
 
 Thank you for your interest in this project.
 
-Before any contribution (code, documentation, ideas, issues, discussions), please read the `readme.md` and ensure that your proposal aligns with the repository's objective: **providing a simulation core for persistent sandbox worlds**, maintainable in the long term.
+Before any contribution (code, documentation, ideas, issues, discussions), please read the [`readme.md`](readme.md) and ensure that your proposal aligns with the repository's objective: **providing a simulation core for persistent sandbox worlds**, maintainable in the long term.
 
 This repository is neither a video game, nor a graphics engine, nor a narrative RPG. The project's priority is **systemic coherence**, **core stability**, **real persistence** of the simulated world, and **maintainability over several years**.
 
@@ -11,12 +11,12 @@ Some contributions, even technically correct, may be rejected if they do not ser
 ## Navigation
 
 - [`readme.md`](readme.md)
-- [`ARCHITECTURE.md`](ARCHITECTURE.md)
-- [`DECISIONS.md`](DECISIONS.md)
-- [`ROADMAP.md`](ROADMAP.md)
+- [`ARCHITECTURE.md`](doc/ARCHITECTURE.md)
+- [`DECISIONS.md`](doc/DECISIONS.md)
+- [`ROADMAP.md`](doc/ROADMAP.md)
 - [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [`SECURITY.md`](SECURITY.md)
-- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+- [`SECURITY.md`](doc/SECURITY.md)
+- [`CODE_OF_CONDUCT.md`](doc/CODE_OF_CONDUCT.md)
 
 ## Table of Contents
 
@@ -58,7 +58,7 @@ To maximize acceptance chances:
 
 Security vulnerabilities **must not** be reported via public issues, discussions, or pull requests.
 
-Please follow the procedure and reporting channel described in `SECURITY.md`.
+Please follow the procedure and reporting channel described in [`SECURITY.md`](doc/SECURITY.md).
 
 ## Project Philosophy and Principles
 

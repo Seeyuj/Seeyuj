@@ -6,11 +6,11 @@ This document defines the security policy for the **Persistent Sandbox Worlds Pl
 
 ## Navigation
 
-- [`readme.md`](readme.md)
+- [`readme.md`](doc/readme.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - [`DECISIONS.md`](DECISIONS.md)
 - [`ROADMAP.md`](ROADMAP.md)
-- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- [`CONTRIBUTING.md`](doc/CONTRIBUTING.md)
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
@@ -67,7 +67,7 @@ Contributions must respect these principles and never introduce logic that weake
 ## Expected Security Best Practices
 
 Contributors are required to follow these rules:
-These requirements complement those described in `CONTRIBUTING.md`.
+These requirements complement those described in `doc/CONTRIBUTING.md`.
 
 ### Server Side
 
@@ -109,7 +109,7 @@ Please report any vulnerability responsibly via:
 **Email:** `security@<project-name>.org`  
 *(address to be adapted before publication)*
 
-For general contribution rules (issues, PR, workflow), see `CONTRIBUTING.md` — except for vulnerabilities, which must follow this document.
+For general contribution rules (issues, PR, workflow), see `doc/CONTRIBUTING.md` — except for vulnerabilities, which must follow this document.
 
 The message must include:
 

@@ -2,11 +2,11 @@
 
 ## Navigation
 
-- [`readme.md`](readme.md)
+- [`readme.md`](doc/readme.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - [`DECISIONS.md`](DECISIONS.md)
 - [`ROADMAP.md`](ROADMAP.md)
-- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- [`CONTRIBUTING.md`](doc/CONTRIBUTING.md)
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 

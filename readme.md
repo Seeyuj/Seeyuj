@@ -7,12 +7,12 @@ This repository contains the **simulation core** of a platform enabling the cons
 ## Navigation
 
 - [`readme.md`](readme.md)
-- [`ARCHITECTURE.md`](ARCHITECTURE.md)
-- [`DECISIONS.md`](DECISIONS.md)
-- [`ROADMAP.md`](ROADMAP.md)
+- [`ARCHITECTURE.md`](doc/ARCHITECTURE.md)
+- [`DECISIONS.md`](doc/DECISIONS.md)
+- [`ROADMAP.md`](doc/ROADMAP.md)
 - [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [`SECURITY.md`](SECURITY.md)
-- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+- [`SECURITY.md`](doc/SECURITY.md)
+- [`CODE_OF_CONDUCT.md`](doc/CODE_OF_CONDUCT.md)
 
 This project **is not**:
 
@@ -189,8 +189,8 @@ Before any contribution:
 Detailed rules are defined in:
 
 - `CONTRIBUTING.md`
-- `ARCHITECTURE.md`
-- `DECISIONS.md`
+- [`ARCHITECTURE.md`](doc/ARCHITECTURE.md)
+- [`DECISIONS.md`](doc/DECISIONS.md)
 
 ---
 

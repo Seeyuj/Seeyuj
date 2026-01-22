@@ -2,11 +2,11 @@
 
 ## Navigation
 
-- [`readme.md`](readme.md)
+- [`readme.md`](doc/readme.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - [`DECISIONS.md`](DECISIONS.md)
 - [`ROADMAP.md`](ROADMAP.md)
-- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- [`CONTRIBUTING.md`](doc/CONTRIBUTING.md)
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
@@ -273,6 +273,35 @@ The project aims for **years of life**, not a quick demo.
 - Refactorings accepted.
 - Rushed features refused.
 - Documentation considered a priority.
+
+---
+
+## D-010 — Rust pour le Noyau
+
+**Status**: Accepted  
+
+### Decision
+
+Le **noyau de simulation** est développé en **Rust**.
+
+### Justification
+
+Rust offre un équilibre optimal pour un projet de plateforme persistante :
+
+- **Sécurité mémoire** : garantie à la compilation, essentielle pour la stabilité à long terme ;
+- **Performance** : performances natives sans compromis sur la sécurité ;
+- **Concurrence** : modèle de concurrence sûr et puissant pour les simulations multi-entités ;
+- **Maintenabilité** : système de types fort et écosystème mature favorisant la maintenabilité sur plusieurs années ;
+- **Interopérabilité** : capacité à exposer des APIs C-compatibles pour les clients dans d'autres langages ;
+- **Fiabilité** : absence de comportements indéfinis, cruciale pour la persistance et la reproductibilité.
+
+### Consequences
+
+- Le noyau de simulation est écrit en Rust.
+- Les clients peuvent être développés dans n'importe quel langage compatible avec les APIs exposées.
+- Les modules optionnels peuvent être en Rust ou dans d'autres langages selon leur nature.
+- La compilation Rust garantit la sécurité mémoire sans runtime overhead.
+- L'écosystème Rust (crates) peut être utilisé pour les fonctionnalités non-critiques.
 
 ---
 
