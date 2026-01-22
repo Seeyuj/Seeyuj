@@ -4,6 +4,16 @@
 
 Ce dépôt contient le **noyau de simulation** d’une plateforme permettant de construire des mondes sandbox vivants, cohérents et durables.
 
+## Navigation
+
+- [`readme.md`](readme.md)
+- [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- [`DECISIONS.md`](DECISIONS.md)
+- [`ROADMAP.md`](ROADMAP.md)
+- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- [`SECURITY.md`](SECURITY.md)
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+
 Ce projet **n’est pas** :
 
 - un jeu vidéo

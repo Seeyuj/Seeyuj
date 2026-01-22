@@ -2,15 +2,26 @@
 
 Merci de l’intérêt que vous portez à ce projet.
 
-Avant toute contribution (code, documentation, idées, issues, discussions), merci de lire le `README.md` et de vous assurer que votre proposition est alignée avec l’objectif du dépôt : **fournir un noyau de simulation de mondes sandbox persistants**, maintenable sur le long terme.
+Avant toute contribution (code, documentation, idées, issues, discussions), merci de lire le `readme.md` et de vous assurer que votre proposition est alignée avec l’objectif du dépôt : **fournir un noyau de simulation de mondes sandbox persistants**, maintenable sur le long terme.
 
 Ce dépôt n’est ni un jeu vidéo, ni un moteur graphique, ni un RPG narratif. La priorité du projet est la **cohérence systémique**, la **stabilité du noyau**, la **persistance réelle** du monde simulé et la **maintenabilité sur plusieurs années**.
 
 Certaines contributions, même techniquement correctes, peuvent être refusées si elles ne servent pas la vision et l’architecture du projet.
 
-## Table des matieres
+## Navigation
+
+- [`readme.md`](readme.md)
+- [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- [`DECISIONS.md`](DECISIONS.md)
+- [`ROADMAP.md`](ROADMAP.md)
+- [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- [`SECURITY.md`](SECURITY.md)
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+
+## Table des matières
 
 - [Avant de contribuer](#avant-de-contribuer)
+- [Sécurité (signalement responsable)](#securite-signalement-responsable)
 - [Philosophie et principes du projet](#philosophie-et-principes-du-projet)
   - [Simulation avant narration](#simulation-avant-narration)
   - [Monde autonome et non centre sur le joueur](#monde-autonome-et-non-centre-sur-le-joueur)
@@ -39,9 +50,15 @@ Si ces principes ne correspondent pas à vos attentes ou à votre approche, ce p
 
 Pour maximiser les chances d’acceptation :
 
-- **Pour une modification significative** (nouvelle fonctionnalité, changement du noyau, refactorisation majeure), ouvrez d’abord une issue ou une discussion.
+- **Pour une modification significative** (nouvelle fonctionnalité, changement du noyau, refactorisation majeure), ouvrez d’abord une issue ou une discussion. *(Exception : vulnérabilités de sécurité — voir `SECURITY.md`.)*
 - **Une Pull Request = un objectif** : évitez les changements “fourre-tout”.
 - **Expliquez le pourquoi** : le contexte et l’impact systémique comptent autant que le code.
+
+## Sécurité (signalement responsable)
+
+Les vulnérabilités de sécurité **ne doivent pas** être signalées via des issues publiques, discussions ou pull requests.
+
+Merci de suivre la procédure et le canal de signalement décrits dans `SECURITY.md`.
 
 ## Philosophie et principes du projet
 
