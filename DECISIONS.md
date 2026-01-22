@@ -1,4 +1,4 @@
-# Registre des décisions
+# Decision Log
 
 ## Navigation
 
@@ -10,281 +10,281 @@
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-Registre des décisions architecturales et conceptuelles
+Log of architectural and conceptual decisions
 
-## Rôle de ce document
+## Role of This Document
 
-Ce document consigne les **décisions structurantes** prises pour le projet.
+This document records the **structural decisions** made for the project.
 
-Il a pour objectifs de :
+Its objectives are to:
 
-- expliciter les choix techniques, conceptuels et organisationnels majeurs ;
-- éviter la rediscussion perpétuelle de décisions déjà tranchées ;
-- fournir un référentiel clair aux mainteneurs et contributeurs ;
-- garantir la cohérence du projet sur le long terme.
+- explain major technical, conceptual, and organizational choices;
+- avoid perpetual re-discussion of already settled decisions;
+- provide a clear reference for maintainers and contributors;
+- guarantee the project's coherence in the long term.
 
-Ce document n’est **ni une roadmap**, ni une liste de fonctionnalités prévues.  
-Il décrit **ce qui est décidé**, **pourquoi**, et **ce que cela implique**.
+This document is **neither a roadmap**, nor a list of planned features.  
+It describes **what is decided**, **why**, and **what it implies**.
 
-Toute contribution est évaluée à l’aune des décisions consignées ici.
-
----
-
-## Gouvernance des décisions
-
-- Les décisions sont prises dans l’intérêt **à long terme** du projet.
-- Une décision peut évoluer, mais **jamais implicitement**.
-- Toute remise en cause doit passer par une discussion structurée.
-- La cohérence systémique prime sur l’innovation opportuniste.
-- Aucune Pull Request ne peut modifier à elle seule une décision fondatrice.
+Any contribution is evaluated against the decisions recorded here.
 
 ---
 
-## D-001 — Le projet est une plateforme, pas un jeu
+## Decision Governance
 
-**Statut** : Acceptée  
+- Decisions are made in the **long-term** interest of the project.
+- A decision may evolve, but **never implicitly**.
+- Any challenge must go through a structured discussion.
+- Systemic coherence takes precedence over opportunistic innovation.
+- No Pull Request can alone modify a foundational decision.
 
-### Décision
+---
 
-Le projet est une **plateforme open-source de simulation de mondes sandbox persistants**, et **non** :
+## D-001 — The Project is a Platform, Not a Game
 
-- un jeu vidéo,
-- un moteur graphique,
-- un RPG narratif,
-- un framework de gameplay,
-- une vitrine technologique.
+**Status**: Accepted  
+
+### Decision
+
+The project is an **open-source platform for simulating persistent sandbox worlds**, and **not**:
+
+- a video game,
+- a graphics engine,
+- a narrative RPG,
+- a gameplay framework,
+- a technology showcase.
 
 ### Justification
 
-La valeur du projet repose sur :
+The project's value lies in:
 
-- la stabilité du noyau de simulation ;
-- la persistance réelle du monde ;
-- la cohérence systémique ;
-- la maintenabilité sur plusieurs années.
+- the stability of the simulation core;
+- the real persistence of the world;
+- systemic coherence;
+- maintainability over several years.
 
-Un positionnement orienté “jeu” impose des compromis incompatibles avec ces objectifs.
+A "game"-oriented positioning imposes compromises incompatible with these objectives.
 
-### Conséquences
+### Consequences
 
-- Le noyau ne fournit aucun gameplay clé en main.
-- L’expérience joueur n’est pas un objectif du cœur.
-- Les clients sont des implémentations, jamais des piliers architecturaux.
-
----
-
-## D-002 — Simulation avant narration
-
-**Statut** : Acceptée  
-
-### Décision
-
-La **simulation systémique** est prioritaire sur toute forme de narration.
-
-### Justification
-
-Les mondes persistants crédibles produisent leurs propres récits via :
-
-- le temps ;
-- les ressources ;
-- les entités ;
-- les conflits ;
-- les interactions.
-
-La narration imposée affaiblit la cohérence et la crédibilité du système.
-
-### Conséquences
-
-- Aucun scénario, quête ou progression narrative dans le noyau.
-- Toute histoire est émergente.
-- Les systèmes précèdent toujours le récit.
+- The core provides no ready-made gameplay.
+- Player experience is not a core objective.
+- Clients are implementations, never architectural pillars.
 
 ---
 
-## D-003 — Monde autonome et non centré sur le joueur
+## D-002 — Simulation Before Narration
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Le monde doit pouvoir **exister, évoluer et persister sans aucun joueur**.
+**Systemic simulation** takes priority over any form of narration.
 
 ### Justification
 
-Un monde crédible n’a pas besoin de la présence humaine pour fonctionner.
+Credible persistent worlds produce their own stories through:
 
-### Conséquences
+- time;
+- resources;
+- entities;
+- conflicts;
+- interactions.
 
-- Le serveur fonctionne sans client connecté.
-- Le joueur n’a aucun statut particulier.
-- Joueurs et PNJ sont soumis aux mêmes règles systémiques.
+Imposed narration weakens the system's coherence and credibility.
+
+### Consequences
+
+- No scenario, quest, or narrative progression in the core.
+- Any story is emergent.
+- Systems always precede the narrative.
 
 ---
 
-## D-004 — Serveur autoritaire et persistance réelle
+## D-003 — Autonomous World Not Centered on the Player
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Le serveur est l’unique autorité sur l’état du monde.
+The world must be able to **exist, evolve, and persist without any player**.
 
 ### Justification
 
-La cohérence, la sécurité et la persistance exigent une source de vérité unique.
+A credible world does not need human presence to function.
 
-### Conséquences
+### Consequences
 
-- Aucune logique critique côté client.
-- Persistance explicite sur disque.
-- États traçables, inspectables et rejouables.
-- Mode solo = serveur local.
-- Mode multijoueur = serveur distant identique.
+- The server runs without a connected client.
+- The player has no special status.
+- Players and NPCs are subject to the same systemic rules.
 
 ---
 
-## D-005 — Découplage strict entre simulation et rendu
+## D-004 — Authoritative Server and Real Persistence
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Le noyau de simulation est **totalement indépendant** de toute technologie de rendu ou de client.
+The server is the sole authority on the world state.
 
 ### Justification
 
-Le rendu est une implémentation interchangeable.  
-La simulation constitue le socle durable du projet.
+Coherence, security, and persistence require a single source of truth.
 
-Lier le cœur à un moteur graphique compromettrait la portabilité et la longévité.
+### Consequences
 
-### Conséquences
-
-- Aucun moteur graphique côté serveur.
-- Aucun code de rendu dans le noyau.
-- Le monde simulé peut être consommé par :
-  - un client 3D temps réel,
-  - un client 2D,
-  - un client web,
-  - un client headless (CLI, outils, bots, visualisation),
-  - ou tout autre consommateur conforme aux APIs.
-- Le client n’est jamais propriétaire de la logique du monde.
+- No critical logic on the client side.
+- Explicit persistence to disk.
+- Traceable, inspectable, and replayable states.
+- Solo mode = local server.
+- Multiplayer mode = identical remote server.
 
 ---
 
-## D-006 — Client de rendu de référence et standard graphique officiel
+## D-005 — Strict Decoupling Between Simulation and Rendering
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Le projet fournit un **client de rendu de référence**, basé sur **Unreal Engine**, servant de **standard graphique officiel**, **sans exclusivité**.
+The simulation core is **totally independent** of any rendering technology or client.
 
 ### Justification
 
-Un client de référence est nécessaire pour :
+Rendering is an interchangeable implementation.  
+Simulation constitutes the project's durable foundation.
 
-- démontrer la viabilité visuelle de la plateforme ;
-- définir un standard commun d’assets et de pipeline ;
-- garantir une cohérence visuelle minimale.
+Linking the core to a graphics engine would compromise portability and longevity.
 
-Cependant, aucun moteur ou client ne doit devenir une dépendance structurelle.
+### Consequences
 
-### Conséquences
+- No graphics engine on the server side.
+- No rendering code in the core.
+- The simulated world can be consumed by:
+  - a real-time 3D client,
+  - a 2D client,
+  - a web client,
+  - a headless client (CLI, tools, bots, visualization),
+  - or any other consumer conforming to the APIs.
+- The client never owns the world logic.
 
-- Unreal Engine est une **implémentation de référence**, pas une contrainte.
-- D’autres clients peuvent exister librement :
+---
+
+## D-006 — Reference Rendering Client and Official Graphics Standard
+
+**Status**: Accepted  
+
+### Decision
+
+The project provides a **reference rendering client**, based on **Unreal Engine**, serving as the **official graphics standard**, **without exclusivity**.
+
+### Justification
+
+A reference client is necessary to:
+
+- demonstrate the platform's visual viability;
+- define a common standard for assets and pipeline;
+- guarantee minimal visual coherence.
+
+However, no engine or client must become a structural dependency.
+
+### Consequences
+
+- Unreal Engine is a **reference implementation**, not a constraint.
+- Other clients can exist freely:
   - Godot,
-  - clients web,
-  - clients spécialisés (administration, analyse, visualisation),
-  - moteurs ou technologies futures.
-- Tous les clients sont des **consommateurs du monde simulé**, jamais des décideurs.
-- Le standard graphique :
-  - n’impose aucune règle à la simulation ;
-  - n’introduit aucune dépendance côté serveur ;
-  - peut évoluer indépendamment du noyau.
+  - web clients,
+  - specialized clients (administration, analysis, visualization),
+  - future engines or technologies.
+- All clients are **consumers of the simulated world**, never decision-makers.
+- The graphics standard:
+  - imposes no rules on simulation;
+  - introduces no server-side dependencies;
+  - can evolve independently of the core.
 
-> Unreal Engine n’est pas le projet.  
-> C’est un client officiel parmi d’autres, remplaçable.
+> Unreal Engine is not the project.  
+> It is an official client among others, replaceable.
 
 ---
 
-## D-007 — IA pragmatique, déterministe et explicable
+## D-007 — Pragmatic, Deterministic, and Explainable AI
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Les entités sont des **agents déterministes**, explicables et observables.
+Entities are **deterministic agents**, explainable and observable.
 
 ### Justification
 
-Un monde persistant doit être :
+A persistent world must be:
 
-- débogable ;
-- reproductible ;
-- compréhensible.
+- debuggable;
+- reproducible;
+- understandable.
 
-Les IA opaques ou magiques sont incompatibles avec ces exigences.
+Opaque or magical AI is incompatible with these requirements.
 
-### Conséquences
+### Consequences
 
-- Pas d’IA consciente ou autonome fantasmée.
-- IA générative autorisée uniquement en périphérie.
-- Les décisions doivent être traçables et justifiables.
+- No conscious or fantasized autonomous AI.
+- Generative AI allowed only on the periphery.
+- Decisions must be traceable and justifiable.
 
 ---
 
-## D-008 — Noyau minimal, extensions modulaires
+## D-008 — Minimal Core, Modular Extensions
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-Le noyau reste **minimal, strict et stable**.  
-Toute fonctionnalité non essentielle est implémentée sous forme de **module optionnel**.
+The core remains **minimal, strict, and stable**.  
+Any non-essential feature is implemented as an **optional module**.
 
 ### Justification
 
-Un noyau trop riche devient instable, rigide et coûteux à maintenir.
+A core that is too rich becomes unstable, rigid, and costly to maintain.
 
-### Conséquences
+### Consequences
 
-- APIs publiques documentées et versionnées.
-- Modules activables, désactivables ou remplaçables.
-- Aucun module ne contourne le noyau.
+- Documented and versioned public APIs.
+- Modules that can be activated, deactivated, or replaced.
+- No module bypasses the core.
 
 ---
 
-## D-009 — Stabilité et maintenabilité avant vitesse
+## D-009 — Stability and Maintainability Before Speed
 
-**Statut** : Acceptée  
+**Status**: Accepted  
 
-### Décision
+### Decision
 
-La stabilité, la lisibilité et la maintenabilité priment sur la rapidité de développement.
+Stability, readability, and maintainability take precedence over development speed.
 
 ### Justification
 
-Le projet vise des **années de vie**, pas une démo rapide.
+The project aims for **years of life**, not a quick demo.
 
-### Conséquences
+### Consequences
 
-- Refactorisations acceptées.
-- Features précipitées refusées.
-- Documentation considérée comme prioritaire.
-
----
-
-## Évolution des décisions
-
-- Toute décision majeure doit être ajoutée à ce document.
-- Une décision existante ne peut être modifiée qu’avec :
-  - une justification explicite ;
-  - une analyse d’impact ;
-  - une validation des mainteneurs.
-- Les décisions fondatrices ne peuvent être annulées que collectivement.
+- Refactorings accepted.
+- Rushed features refused.
+- Documentation considered a priority.
 
 ---
 
-Fin du document.
+## Decision Evolution
+
+- Any major decision must be added to this document.
+- An existing decision can only be modified with:
+  - explicit justification;
+  - impact analysis;
+  - maintainer validation.
+- Foundational decisions can only be canceled collectively.
+
+---
+
+End of document.

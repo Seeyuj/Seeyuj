@@ -10,277 +10,277 @@
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-## Objectif du document
+## Document Purpose
 
-Ce document décrit l’architecture fondamentale de la plateforme de mondes sandbox persistants.
+This document describes the fundamental architecture of the persistent sandbox worlds platform.
 
-Il définit :
-- les responsabilités de chaque couche du système ;
-- les frontières architecturales non négociables ;
-- les contraintes techniques imposées aux contributions ;
-- les choix structurants garantissant cohérence, persistance et maintenabilité à long terme.
+It defines:
+- the responsibilities of each system layer;
+- non-negotiable architectural boundaries;
+- technical constraints imposed on contributions;
+- structural choices ensuring coherence, persistence, and long-term maintainability.
 
-Ce document fait autorité.  
-Toute proposition ou contribution incompatible avec cette architecture est refusée.
-
----
-
-## Vision d’ensemble
-
-La plateforme est conçue comme une **infrastructure de simulation**, et non comme un jeu.
-
-Elle repose sur une séparation stricte entre :
-
-1. le noyau de simulation serveur (core)  
-2. les modules et extensions optionnels  
-3. les clients (rendu, UI, interaction)  
-4. les outils d’exploitation et d’observabilité  
-
-Le serveur est toujours l’unique autorité.  
-Le monde existe et évolue indépendamment de toute présence de client ou de joueur.
+This document is authoritative.  
+Any proposal or contribution incompatible with this architecture is rejected.
 
 ---
 
-## Principe fondamental : serveur autoritaire
+## Overview
 
-### Règle absolue
+The platform is designed as a **simulation infrastructure**, not as a game.
 
-Le serveur est l’unique source de vérité de l’état du monde.
+It is based on a strict separation between:
 
-Cela implique :
+1. the server simulation core  
+2. optional modules and extensions  
+3. clients (rendering, UI, interaction)  
+4. operational and observability tools  
 
-- aucune décision de simulation côté client ;
-- aucune logique critique exécutée hors serveur ;
-- aucune persistance implicite ou recalculée ;
-- aucune dépendance serveur vers un moteur graphique.
-
-Mode solo = serveur local  
-Mode multijoueur = serveur distant  
-
-Même architecture.  
-Mêmes règles.  
-Aucune exception.
+The server is always the sole authority.  
+The world exists and evolves independently of any client or player presence.
 
 ---
 
-## Architecture en couches
+## Fundamental Principle: Authoritative Server
 
-### 1. Noyau de simulation (Core)
+### Absolute Rule
 
-Le noyau est volontairement :
+The server is the single source of truth for the world state.
 
-- minimal ;
-- déterministe ;
-- stable ;
-- découplé ;
-- maintenable sur plusieurs années.
+This implies:
 
-Il ne contient **que ce qui est strictement nécessaire** à la simulation persistante d’un monde autonome.
+- no simulation decisions on the client side;
+- no critical logic executed outside the server;
+- no implicit or recomputed persistence;
+- no server dependency on a graphics engine.
 
-#### Responsabilités du noyau
+Solo mode = local server  
+Multiplayer mode = remote server  
 
-- gestion du temps simulé ;
-- représentation de l’espace (régions, chunks, topologie) ;
-- entités persistantes (agents, objets, structures) ;
-- systèmes de règles (économie, besoins, production, conflits, flux) ;
-- événements systémiques ;
-- persistance explicite sur disque ;
-- reprise après arrêt ou crash ;
-- APIs publiques, documentées et versionnées.
-
-#### Ce que le noyau ne fait jamais
-
-- rendu graphique ;
-- interface utilisateur ;
-- gameplay orienté “fun” ;
-- narration, quêtes ou scripts scénarisés ;
-- logique spécifique ou privilégiée pour le joueur ;
-- équilibrage ludique ;
-- IA générative centrale.
-
-Si une fonctionnalité n’est pas indispensable à la **simulation autonome et persistante du monde**, elle n’a pas sa place dans le noyau.
+Same architecture.  
+Same rules.  
+No exceptions.
 
 ---
 
-### 2. Modules et extensions
+## Layered Architecture
 
-Les fonctionnalités non essentielles sont implémentées sous forme de **modules optionnels**.
+### 1. Simulation Core
 
-#### Propriétés des modules
+The core is intentionally:
 
-Un module :
+- minimal;
+- deterministic;
+- stable;
+- decoupled;
+- maintainable over several years.
 
-- utilise uniquement les APIs publiques du noyau ;
-- ne contourne jamais le core ;
-- peut être activé ou désactivé sans compromettre le monde ;
-- est versionné indépendamment ;
-- peut être remplacé par une autre implémentation.
+It contains **only what is strictly necessary** for the persistent simulation of an autonomous world.
 
-Exemples de modules possibles :
+#### Core Responsibilities
 
-- systèmes économiques alternatifs ;
-- règles sociales ou politiques ;
-- IA comportementale avancée ;
-- outils d’analyse ou de replay ;
-- intégrations externes.
+- simulated time management;
+- space representation (regions, chunks, topology);
+- persistent entities (agents, objects, structures);
+- rule systems (economy, needs, production, conflicts, flows);
+- systemic events;
+- explicit persistence to disk;
+- recovery after shutdown or crash;
+- public, documented, and versioned APIs.
 
-Un module ne doit **jamais** :
+#### What the Core Never Does
 
-- modifier le noyau implicitement ;
-- introduire une dépendance graphique côté serveur ;
-- casser le déterminisme du core.
+- graphical rendering;
+- user interface;
+- "fun"-oriented gameplay;
+- narration, quests, or scripted scenarios;
+- player-specific or privileged logic;
+- game balance;
+- central generative AI.
+
+If a feature is not essential to the **autonomous and persistent simulation of the world**, it has no place in the core.
 
 ---
 
-### 3. Clients (consommateurs du monde)
+### 2. Modules and Extensions
 
-Les clients sont des **consommateurs de l’état du monde**, jamais des décideurs.
+Non-essential features are implemented as **optional modules**.
 
-#### Rôle des clients
+#### Module Properties
 
-- afficher l’état du monde ;
-- permettre l’interaction utilisateur ;
-- transmettre des intentions au serveur ;
-- proposer un rendu visuel ou textuel.
+A module:
 
-#### Découplage strict
+- uses only the core's public APIs;
+- never bypasses the core;
+- can be enabled or disabled without compromising the world;
+- is versioned independently;
+- can be replaced by another implementation.
 
-Le noyau :
+Possible module examples:
 
-- ne connaît aucun moteur graphique ;
-- n’importe aucune dépendance client ;
-- peut fonctionner entièrement en mode headless.
+- alternative economic systems;
+- social or political rules;
+- advanced behavioral AI;
+- analysis or replay tools;
+- external integrations.
 
-Un client officiel basé sur Unreal Engine peut exister comme implémentation de référence, mais :
+A module must **never**:
 
-- il n’a aucun privilège ;
-- il est interchangeable ;
-- il ne dicte aucune règle de simulation.
+- modify the core implicitly;
+- introduce a graphics dependency on the server side;
+- break the core's determinism.
 
-D’autres clients peuvent coexister :
+---
+
+### 3. Clients (World Consumers)
+
+Clients are **consumers of the world state**, never decision-makers.
+
+#### Client Role
+
+- display the world state;
+- enable user interaction;
+- transmit intentions to the server;
+- provide visual or textual rendering.
+
+#### Strict Decoupling
+
+The core:
+
+- knows no graphics engine;
+- imports no client dependencies;
+- can run entirely in headless mode.
+
+An official client based on Unreal Engine may exist as a reference implementation, but:
+
+- it has no privilege;
+- it is interchangeable;
+- it dictates no simulation rules.
+
+Other clients can coexist:
 - Godot
 - Web
 - CLI
-- outils de visualisation spécialisés
+- specialized visualization tools
 
 ---
 
-### 4. Outils d’exploitation
+### 4. Operational Tools
 
-Les outils ne font pas partie du noyau, mais sont essentiels à la viabilité du projet.
+Tools are not part of the core, but are essential to the project's viability.
 
-Ils peuvent inclure :
+They may include:
 
-- administration serveur ;
-- inspection de l’état du monde ;
-- visualisation des systèmes ;
-- métriques et profiling ;
-- validation de la persistance ;
-- replay déterministe.
+- server administration;
+- world state inspection;
+- system visualization;
+- metrics and profiling;
+- persistence validation;
+- deterministic replay.
 
-Ils respectent les mêmes contraintes :
+They respect the same constraints:
 
-- aucune autorité sur le monde ;
-- aucune logique critique masquée ;
-- interaction via APIs contrôlées.
-
----
-
-## Simulation et déterminisme
-
-### Déterminisme obligatoire
-
-À entrée égale, le noyau doit produire :
-
-- les mêmes décisions ;
-- les mêmes transitions d’état ;
-- les mêmes résultats.
-
-Le déterminisme est une exigence fonctionnelle, pas une optimisation.
-
-Toute source de non-déterminisme doit être :
-
-- explicitement isolée ;
-- documentée ;
-- optionnelle ;
-- jamais centrale.
+- no authority over the world;
+- no hidden critical logic;
+- interaction via controlled APIs.
 
 ---
 
-## Persistance
+## Simulation and Determinism
 
-### Persistance réelle, explicite et traçable
+### Mandatory Determinism
 
-La persistance :
+Given equal inputs, the core must produce:
 
-- est écrite explicitement sur disque ;
-- survit aux redémarrages et crashs ;
-- ne dépend pas d’états implicites ;
-- peut être inspectée ou rejouée.
+- the same decisions;
+- the same state transitions;
+- the same results.
 
-Le monde ne disparaît jamais lorsque le serveur s’arrête.
+Determinism is a functional requirement, not an optimization.
 
-Toute logique reposant sur :
+Any source of non-determinism must be:
 
-- mémoire volatile ;
-- recalculs implicites ;
-- états temporaires non sauvegardés ;
-
-est interdite dans le noyau.
+- explicitly isolated;
+- documented;
+- optional;
+- never central.
 
 ---
 
-## Scalabilité et découpage spatial
+## Persistence
 
-Le monde est simulé par :
+### Real, Explicit, and Traceable Persistence
 
-- régions ;
-- chunks ;
-- niveaux de détail de simulation.
+Persistence:
 
-Le noyau doit pouvoir :
+- is explicitly written to disk;
+- survives restarts and crashes;
+- does not depend on implicit states;
+- can be inspected or replayed.
 
-- simuler partiellement le monde ;
-- charger et décharger des zones ;
-- adapter le coût de calcul ;
-- fonctionner sans clients connectés.
+The world never disappears when the server stops.
 
-La scalabilité est une **propriété structurelle**, pas une optimisation tardive.
+Any logic relying on:
 
----
+- volatile memory;
+- implicit recomputations;
+- unsaved temporary states;
 
-## Contraintes techniques non négociables
-
-- serveur headless obligatoire ;
-- aucune dépendance graphique serveur ;
-- APIs publiques stables et versionnées ;
-- séparation stricte core / modules ;
-- lisibilité et maintenabilité prioritaires ;
-- refus des abstractions opaques ou “magiques” ;
-- refus des dépendances fermées non justifiées.
+is forbidden in the core.
 
 ---
 
-## Philosophie long terme
+## Scalability and Spatial Partitioning
 
-Cette architecture est conçue pour :
+The world is simulated by:
 
-- durer des années ;
-- supporter des mondes très différents ;
-- survivre aux évolutions technologiques ;
-- permettre une gouvernance claire ;
-- éviter l’explosion de complexité.
+- regions;
+- chunks;
+- simulation detail levels.
 
-La plateforme prime toujours sur le contenu.  
-La cohérence prime toujours sur la rapidité.  
-Le monde prime toujours sur le joueur.
+The core must be able to:
+
+- partially simulate the world;
+- load and unload zones;
+- adapt computational cost;
+- function without connected clients.
+
+Scalability is a **structural property**, not a late optimization.
 
 ---
 
-## Règle finale
+## Non-Negotiable Technical Constraints
 
-Toute proposition est évaluée selon une seule question :
+- mandatory headless server;
+- no server graphics dependencies;
+- stable and versioned public APIs;
+- strict core / modules separation;
+- readability and maintainability prioritized;
+- rejection of opaque or "magical" abstractions;
+- rejection of unjustified closed dependencies.
 
-**Cette fonctionnalité est-elle nécessaire au fonctionnement d’un monde autonome, persistant et cohérent ?**
+---
 
-Si la réponse est non, elle n’appartient pas à cette architecture.
+## Long-Term Philosophy
+
+This architecture is designed to:
+
+- last for years;
+- support very different worlds;
+- survive technological evolution;
+- enable clear governance;
+- avoid complexity explosion.
+
+The platform always takes precedence over content.  
+Coherence always takes precedence over speed.  
+The world always takes precedence over the player.
+
+---
+
+## Final Rule
+
+Any proposal is evaluated according to a single question:
+
+**Is this feature necessary for the operation of an autonomous, persistent, and coherent world?**
+
+If the answer is no, it does not belong in this architecture.

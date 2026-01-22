@@ -1,8 +1,8 @@
-# Plateforme de mondes sandbox persistants
+# Persistent Sandbox Worlds Platform
 
-> Infrastructure open-source de simulation de mondes autonomes et persistants.
+> Open-source infrastructure for simulating autonomous and persistent worlds.
 
-Ce dépôt contient le **noyau de simulation** d’une plateforme permettant de construire des mondes sandbox vivants, cohérents et durables.
+This repository contains the **simulation core** of a platform enabling the construction of living, coherent, and durable sandbox worlds.
 
 ## Navigation
 
@@ -14,179 +14,179 @@ Ce dépôt contient le **noyau de simulation** d’une plateforme permettant de 
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-Ce projet **n’est pas** :
+This project **is not**:
 
-- un jeu vidéo
-- un moteur graphique
-- un RPG narratif
-- un framework de gameplay
-- une vitrine technologique
-
----
-
-## Objectif du projet
-
-L’objectif est de fournir un **socle logiciel stable**, maintenable sur le long terme, permettant à des développeurs, créateurs ou communautés de bâtir **leurs propres mondes persistants**, chacun avec leurs règles, leurs systèmes et leurs usages.
-
-Le projet se positionne comme une **infrastructure**, au même titre qu’un système d’exploitation ou un orchestrateur distribué.
-
-> Le contenu, le gameplay et l’esthétique sont hors du périmètre du noyau.
+- a video game
+- a graphics engine
+- a narrative RPG
+- a gameplay framework
+- a technology showcase
 
 ---
 
-## Principes fondamentaux
+## Project Objective
 
-Ces principes sont **non négociables**.  
-Toute contribution ou proposition qui les viole est rejetée.
+The objective is to provide a **stable software foundation**, maintainable in the long term, enabling developers, creators, or communities to build **their own persistent worlds**, each with their own rules, systems, and uses.
 
-### Monde autonome
+The project positions itself as an **infrastructure**, similar to an operating system or a distributed orchestrator.
 
-- Le monde existe indépendamment des joueurs
-- Le serveur peut fonctionner sans aucun client connecté
-- Aucun scénario central
-- Aucun héros
-- Les joueurs sont des agents parmi d’autres
-
-Le monde évolue par ses propres règles.
+> Content, gameplay, and aesthetics are outside the scope of the core.
 
 ---
 
-### Simulation avant narration
+## Fundamental Principles
 
-- Le cœur du projet est une simulation systémique
-- Temps, espace, entités et règles sont modélisés explicitement
-- La narration est émergente
-- Aucun contenu narratif n’est codé dans le noyau
+These principles are **non-negotiable**.  
+Any contribution or proposal that violates them is rejected.
 
-Si une histoire existe, elle est le résultat du système.
+### Autonomous World
 
----
+- The world exists independently of players
+- The server can run without any connected clients
+- No central scenario
+- No hero
+- Players are agents among others
 
-### Serveur autoritaire
-
-- Le serveur est la seule source de vérité
-- Le client ne décide jamais de l’état du monde
-- Mode solo = serveur local
-- Mode multijoueur = serveur distant
-- Persistance réelle sur disque
-- Simulation par régions avec niveaux de détail
-
-Le client consomme l’état du monde, il ne le définit pas.
+The world evolves according to its own rules.
 
 ---
 
-### Découplage strict simulation / rendu
+### Simulation Before Narration
 
-- Le noyau ne connaît aucun moteur graphique
-- Le client officiel utilise Unreal Engine
-- D’autres clients peuvent exister (Godot, Web, CLI)
-- Le rendu est interchangeable
+- The heart of the project is a systemic simulation
+- Time, space, entities, and rules are explicitly modeled
+- Narration is emergent
+- No narrative content is coded in the core
 
-Le visuel est une implémentation, pas une dépendance.
-
----
-
-### Liberté encadrée
-
-- Les mondes sont définis par des systèmes et des règles
-- Les extensions passent par des APIs versionnées
-- La compatibilité et la stabilité priment sur la liberté totale
-
-La liberté existe **dans le cadre du système**, jamais en dehors.
+If a story exists, it is the result of the system.
 
 ---
 
-### IA pragmatique
+### Authoritative Server
 
-- Pas d’IA consciente
-- Pas de promesse marketing
-- Les agents sont déterministes et explicables
-- L’IA générative est optionnelle et périphérique
+- The server is the sole source of truth
+- The client never decides the world state
+- Solo mode = local server
+- Multiplayer mode = remote server
+- Real persistence on disk
+- Simulation by regions with detail levels
 
-L’IA est un outil, pas un pilier architectural.
-
----
-
-## Ce que fournit le noyau
-
-Le noyau est volontairement **minimal et strict**.
-
-Il fournit :
-
-- un système de temps persistant
-- une représentation de l’espace simulé
-- des entités persistantes
-- des systèmes de règles modulaires
-- des événements systémiques
-- un mécanisme de sauvegarde et de reprise
-- des APIs documentées et versionnées
-- une simulation fonctionnelle sans client
+The client consumes the world state, it does not define it.
 
 ---
 
-## Ce que le noyau ne fera jamais
+### Strict Decoupling Between Simulation and Rendering
 
-Le noyau **ne contient pas** :
+- The core knows no graphics engine
+- The official client uses Unreal Engine
+- Other clients can exist (Godot, Web, CLI)
+- Rendering is interchangeable
 
-- d’interface utilisateur
-- de HUD
-- de quêtes
-- de dialogues écrits
-- de contenu narratif
-- d’assets graphiques
-- d’équilibrage orienté “fun”
-- de tutoriels joueur
-- d’IA générative centrale
-
-Si une fonctionnalité n’est pas nécessaire à la simulation du monde, elle n’a pas sa place ici.
+The visual is an implementation, not a dependency.
 
 ---
 
-## Standard graphique (client officiel)
+### Framed Freedom
 
-Un client officiel basé sur **Unreal Engine** est fourni comme implémentation de référence.
+- Worlds are defined by systems and rules
+- Extensions go through versioned APIs
+- Compatibility and stability take precedence over total freedom
 
-Objectifs :
-
-- rendu moderne (PBR, éclairage crédible)
-- pipeline d’assets professionnel
-- qualité visuelle élevée mais scalable
-- compatibilité avec le contenu communautaire
-
-Contraintes :
-
-- pas de photoréalisme fragile
-- pas de cinématiques imposées
-- pas de narration visuelle lourde
-
-Le client est une vitrine technique, pas le cœur du projet.
+Freedom exists **within the framework of the system**, never outside.
 
 ---
 
-## Gouvernance
+### Pragmatic AI
 
-Ce projet est open-source, mais **pas sans gouvernance**.
+- No conscious AI
+- No marketing promises
+- Agents are deterministic and explainable
+- Generative AI is optional and peripheral
 
-- Mainteneurs du noyau identifiés
-- Responsabilités clairement définies
-- Process de revue strict
-- Documentation prioritaire
-- Refus assumés
-- Stabilité > rapidité
-
-Le projet privilégie la cohérence et la longévité à la popularité.
+AI is a tool, not an architectural pillar.
 
 ---
 
-## Contribuer
+## What the Core Provides
 
-Avant toute contribution :
+The core is intentionally **minimal and strict**.
 
-1. Lire ce README intégralement
-2. Accepter les principes fondamentaux
-3. Comprendre que certaines idées seront refusées
+It provides:
 
-Les règles détaillées sont définies dans :
+- a persistent time system
+- a representation of simulated space
+- persistent entities
+- modular rule systems
+- systemic events
+- a save and recovery mechanism
+- documented and versioned APIs
+- functional simulation without a client
+
+---
+
+## What the Core Will Never Do
+
+The core **does not contain**:
+
+- user interface
+- HUD
+- quests
+- written dialogues
+- narrative content
+- graphical assets
+- "fun"-oriented balancing
+- player tutorials
+- central generative AI
+
+If a feature is not necessary for world simulation, it has no place here.
+
+---
+
+## Graphics Standard (Official Client)
+
+An official client based on **Unreal Engine** is provided as a reference implementation.
+
+Objectives:
+
+- modern rendering (PBR, credible lighting)
+- professional asset pipeline
+- high but scalable visual quality
+- compatibility with community content
+
+Constraints:
+
+- no fragile photorealism
+- no imposed cinematics
+- no heavy visual narration
+
+The client is a technical showcase, not the heart of the project.
+
+---
+
+## Governance
+
+This project is open-source, but **not without governance**.
+
+- Identified core maintainers
+- Clearly defined responsibilities
+- Strict review process
+- Documentation prioritized
+- Assumed refusals
+- Stability > speed
+
+The project prioritizes coherence and longevity over popularity.
+
+---
+
+## Contributing
+
+Before any contribution:
+
+1. Read this README in full
+2. Accept the fundamental principles
+3. Understand that some ideas will be refused
+
+Detailed rules are defined in:
 
 - `CONTRIBUTING.md`
 - `ARCHITECTURE.md`
@@ -194,17 +194,17 @@ Les règles détaillées sont définies dans :
 
 ---
 
-## Règle de décision
+## Decision Rule
 
-Toute proposition est évaluée selon une question unique :
+Any proposal is evaluated according to a single question:
 
-> **Cette fonctionnalité est-elle nécessaire à la simulation persistante du monde ?**
+> **Is this feature necessary for the persistent simulation of the world?**
 
-Si la réponse est non, elle n’appartient pas au noyau.
+If the answer is no, it does not belong in the core.
 
 ---
 
-## Statut du projet
+## Project Status
 
-Le projet est en phase de fondation.  
-La priorité actuelle est la **solidité conceptuelle et architecturale**, pas la vitesse de développement.
+The project is in the foundation phase.  
+The current priority is **conceptual and architectural solidity**, not development speed.

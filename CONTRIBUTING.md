@@ -1,12 +1,12 @@
-# Guide de contribution
+# Contribution Guide
 
-Merci de l’intérêt que vous portez à ce projet.
+Thank you for your interest in this project.
 
-Avant toute contribution (code, documentation, idées, issues, discussions), merci de lire le `readme.md` et de vous assurer que votre proposition est alignée avec l’objectif du dépôt : **fournir un noyau de simulation de mondes sandbox persistants**, maintenable sur le long terme.
+Before any contribution (code, documentation, ideas, issues, discussions), please read the `readme.md` and ensure that your proposal aligns with the repository's objective: **providing a simulation core for persistent sandbox worlds**, maintainable in the long term.
 
-Ce dépôt n’est ni un jeu vidéo, ni un moteur graphique, ni un RPG narratif. La priorité du projet est la **cohérence systémique**, la **stabilité du noyau**, la **persistance réelle** du monde simulé et la **maintenabilité sur plusieurs années**.
+This repository is neither a video game, nor a graphics engine, nor a narrative RPG. The project's priority is **systemic coherence**, **core stability**, **real persistence** of the simulated world, and **maintainability over several years**.
 
-Certaines contributions, même techniquement correctes, peuvent être refusées si elles ne servent pas la vision et l’architecture du projet.
+Some contributions, even technically correct, may be rejected if they do not serve the project's vision and architecture.
 
 ## Navigation
 
@@ -18,529 +18,529 @@ Certaines contributions, même techniquement correctes, peuvent être refusées 
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-## Table des matières
+## Table of Contents
 
-- [Avant de contribuer](#avant-de-contribuer)
-- [Sécurité (signalement responsable)](#securite-signalement-responsable)
-- [Philosophie et principes du projet](#philosophie-et-principes-du-projet)
-  - [Simulation avant narration](#simulation-avant-narration)
-  - [Monde autonome et non centre sur le joueur](#monde-autonome-et-non-centre-sur-le-joueur)
-  - [Serveur autoritaire et persistance reelle](#serveur-autoritaire-et-persistance-reelle)
-  - [IA pragmatique deterministe et explicable](#ia-pragmatique-deterministe-et-explicable)
-  - [Modularite stricte et extensibilite controlee](#modularite-stricte-et-extensibilite-controlee)
-  - [Separation stricte entre simulation et rendu](#separation-stricte-entre-simulation-et-rendu)
-  - [Plateforme avant contenu](#plateforme-avant-contenu)
-- [Types de contributions acceptees](#types-de-contributions-acceptees)
-- [Contributions explicitement refusees](#contributions-explicitement-refusees)
-- [Architecture regles techniques et contraintes](#architecture-regles-techniques-et-contraintes)
-- [Workflow de contribution](#workflow-de-contribution)
-- [Processus de validation et gouvernance](#processus-de-validation-et-gouvernance)
-- [Code de conduite et communication](#code-de-conduite-et-communication)
+- [Before Contributing](#before-contributing)
+- [Security (Responsible Disclosure)](#security-responsible-disclosure)
+- [Project Philosophy and Principles](#project-philosophy-and-principles)
+  - [Simulation Before Narration](#simulation-before-narration)
+  - [Autonomous World Not Centered on the Player](#autonomous-world-not-centered-on-the-player)
+  - [Authoritative Server and Real Persistence](#authoritative-server-and-real-persistence)
+  - [Pragmatic Deterministic and Explainable AI](#pragmatic-deterministic-and-explainable-ai)
+  - [Strict Modularity and Controlled Extensibility](#strict-modularity-and-controlled-extensibility)
+  - [Strict Separation Between Simulation and Rendering](#strict-separation-between-simulation-and-rendering)
+  - [Platform Before Content](#platform-before-content)
+- [Accepted Contribution Types](#accepted-contribution-types)
+- [Explicitly Rejected Contributions](#explicitly-rejected-contributions)
+- [Architecture Technical Rules and Constraints](#architecture-technical-rules-and-constraints)
+- [Contribution Workflow](#contribution-workflow)
+- [Validation Process and Governance](#validation-process-and-governance)
+- [Code of Conduct and Communication](#code-of-conduct-and-communication)
 
-## Avant de contribuer
+## Before Contributing
 
-En contribuant à ce dépôt, vous acceptez que :
+By contributing to this repository, you accept that:
 
-- la **simulation** et la **persistance** priment sur la narration ou le rendu ;
-- le **serveur** reste l’unique autorité sur l’état du monde ;
-- les systèmes doivent être **explicables**, **déterministes** et **découplés** ;
-- la gouvernance du projet privilégie la **cohérence** plutôt que la rapidité.
+- **simulation** and **persistence** take precedence over narration or rendering;
+- the **server** remains the sole authority on world state;
+- systems must be **explainable**, **deterministic**, and **decoupled**;
+- project governance prioritizes **coherence** over speed.
 
-Si ces principes ne correspondent pas à vos attentes ou à votre approche, ce projet n’est probablement pas adapté à votre contribution — et ce choix est parfaitement légitime.
+If these principles do not match your expectations or approach, this project is probably not suited to your contribution — and this choice is perfectly legitimate.
 
-Pour maximiser les chances d’acceptation :
+To maximize acceptance chances:
 
-- **Pour une modification significative** (nouvelle fonctionnalité, changement du noyau, refactorisation majeure), ouvrez d’abord une issue ou une discussion. *(Exception : vulnérabilités de sécurité — voir `SECURITY.md`.)*
-- **Une Pull Request = un objectif** : évitez les changements “fourre-tout”.
-- **Expliquez le pourquoi** : le contexte et l’impact systémique comptent autant que le code.
+- **For a significant modification** (new feature, core change, major refactoring), first open an issue or discussion. *(Exception: security vulnerabilities — see `SECURITY.md`.)*
+- **One Pull Request = one objective**: avoid "catch-all" changes.
+- **Explain the why**: context and systemic impact matter as much as code.
 
-## Sécurité (signalement responsable)
+## Security (Responsible Disclosure)
 
-Les vulnérabilités de sécurité **ne doivent pas** être signalées via des issues publiques, discussions ou pull requests.
+Security vulnerabilities **must not** be reported via public issues, discussions, or pull requests.
 
-Merci de suivre la procédure et le canal de signalement décrits dans `SECURITY.md`.
+Please follow the procedure and reporting channel described in `SECURITY.md`.
 
-## Philosophie et principes du projet
+## Project Philosophy and Principles
 
-Cette plateforme repose sur un ensemble de principes structurants qui guident l’ensemble des décisions techniques, architecturales et organisationnelles. Toute contribution est évaluée à l’aune de ces principes.
+This platform is based on a set of structural principles that guide all technical, architectural, and organizational decisions. Any contribution is evaluated against these principles.
 
-### Simulation avant narration
+### Simulation Before Narration
 
-Le cœur du projet est un moteur de **simulation persistante**.
+The project's heart is a **persistent simulation engine**.
 
-Le monde existe, évolue et se transforme indépendamment de toute présence humaine ou joueur. Aucun scénario, aucune narration imposée, aucun “parcours” prédéfini ne structure le fonctionnement du monde.
+The world exists, evolves, and transforms independently of any human or player presence. No scenario, no imposed narration, no predefined "path" structures the world's functioning.
 
-Les récits, histoires et situations émergent exclusivement des systèmes simulés (temps, ressources, entités, conflits, interactions).
+Stories, narratives, and situations emerge exclusively from simulated systems (time, resources, entities, conflicts, interactions).
 
-Toute contribution introduisant une logique narrative imposée, linéaire ou centrée sur le joueur sera refusée.
+Any contribution introducing imposed, linear, or player-centered narrative logic will be rejected.
 
-### Monde autonome et non centre sur le joueur
+### Autonomous World Not Centered on the Player
 
-Le joueur n’est jamais une entité centrale, indispensable ou privilégiée.
+The player is never a central, indispensable, or privileged entity.
 
-Le monde :
+The world:
 
-- continue d’évoluer en l’absence de joueurs ;
-- ne se met pas en pause ;
-- ne s’adapte pas artificiellement à la présence humaine.
+- continues to evolve in the absence of players;
+- does not pause;
+- does not artificially adapt to human presence.
 
-Les joueurs, comme les PNJ, sont des acteurs parmi d’autres, soumis aux mêmes règles systémiques.
+Players, like NPCs, are actors among others, subject to the same systemic rules.
 
-Toute contribution supposant un “héros”, un rôle unique, ou un traitement spécial du joueur est incompatible avec ce projet.
+Any contribution assuming a "hero", a unique role, or special treatment of the player is incompatible with this project.
 
-### Serveur autoritaire et persistance reelle
+### Authoritative Server and Real Persistence
 
-Le serveur est l’unique autorité sur l’état du monde.
+The server is the sole authority on world state.
 
-Cela implique :
+This implies:
 
-- aucune logique critique ne doit être exécutée côté client ;
-- le client est un consommateur de l’état du monde, jamais un décideur ;
-- la persistance est assurée sur disque, de manière explicite et traçable.
+- no critical logic must be executed on the client side;
+- the client is a consumer of world state, never a decision-maker;
+- persistence is ensured on disk, explicitly and traceably.
 
-Les mécanismes reposant sur des états volatiles, temporaires ou implicitement recalculés sont proscrits pour le noyau de simulation.
+Mechanisms relying on volatile, temporary, or implicitly recomputed states are prohibited for the simulation core.
 
-### IA pragmatique deterministe et explicable
+### Pragmatic Deterministic and Explainable AI
 
-Les entités non-joueurs sont des **agents** définis par :
+Non-player entities are **agents** defined by:
 
-- des besoins ;
-- des objectifs ;
-- une mémoire ;
-- des règles de décision explicables.
+- needs;
+- objectives;
+- memory;
+- explainable decision rules.
 
-Le projet ne vise pas à créer une IA “magique” ou opaque. Les comportements doivent être reproductibles, observables et débogables.
+The project does not aim to create "magical" or opaque AI. Behaviors must be reproducible, observable, and debuggable.
 
-Les approches probabilistes ou génératives peuvent exister **en périphérie**, mais jamais au cœur de la simulation persistante.
+Probabilistic or generative approaches may exist **on the periphery**, but never at the heart of persistent simulation.
 
-### Modularite stricte et extensibilite controlee
+### Strict Modularity and Controlled Extensibility
 
-Le noyau du projet doit rester :
+The project core must remain:
 
-- minimal ;
-- stable ;
-- découplé ;
-- maintenable sur le long terme.
+- minimal;
+- stable;
+- decoupled;
+- maintainable in the long term.
 
-Toute fonctionnalité non essentielle doit être implémentée sous forme de **module optionnel**, clairement isolé du cœur de la simulation.
+Any non-essential feature must be implemented as an **optional module**, clearly isolated from the simulation core.
 
-Les modules :
+Modules:
 
-- utilisent des APIs publiques et versionnées ;
-- ne contournent pas le noyau ;
-- peuvent être activés, désactivés ou remplacés sans compromettre le monde.
+- use public and versioned APIs;
+- do not bypass the core;
+- can be activated, deactivated, or replaced without compromising the world.
 
-### Separation stricte entre simulation et rendu
+### Strict Separation Between Simulation and Rendering
 
-La simulation du monde est totalement indépendante de toute technologie de rendu.
+World simulation is totally independent of any rendering technology.
 
-Le projet peut définir un standard graphique de référence, mais ce standard :
+The project may define a reference graphics standard, but this standard:
 
-- ne dicte jamais les règles de la simulation ;
-- n’introduit aucune dépendance graphique dans le serveur ;
-- reste un consommateur du monde simulé.
+- never dictates simulation rules;
+- introduces no graphics dependency in the server;
+- remains a consumer of the simulated world.
 
-Toute contribution couplant directement la logique de simulation à un moteur graphique sera refusée.
+Any contribution directly coupling simulation logic to a graphics engine will be rejected.
 
-### Plateforme avant contenu
+### Platform Before Content
 
-Le projet fournit des **systèmes**, des **règles** et des **outils**, pas des expériences clés en main.
+The project provides **systems**, **rules**, and **tools**, not ready-made experiences.
 
-Le contenu (mondes, factions, scripts, assets, règles spécifiques) est laissé à la charge des serveurs, des créateurs et des communautés.
+Content (worlds, factions, scripts, assets, specific rules) is left to servers, creators, and communities.
 
-Les contributions ajoutant du contenu “par défaut” au détriment de la robustesse de la plateforme ne sont pas prioritaires.
+Contributions adding "default" content to the detriment of platform robustness are not prioritized.
 
-## Types de contributions acceptees
+## Accepted Contribution Types
 
-Le projet accepte et encourage les contributions qui renforcent la stabilité, la cohérence et la pérennité de la plateforme.
+The project accepts and encourages contributions that strengthen the platform's stability, coherence, and sustainability.
 
-### Corrections de bugs
+### Bug Fixes
 
-Toute correction améliorant :
+Any fix improving:
 
-- la stabilité du serveur ;
-- la cohérence de la simulation ;
-- la fiabilité de la persistance ;
-- la reproductibilité des comportements ;
+- server stability;
+- simulation coherence;
+- persistence reliability;
+- behavior reproducibility;
 
-est considérée comme prioritaire.
+is considered a priority.
 
-Les corrections doivent être accompagnées d’une description claire du problème, de son impact systémique et, lorsque possible, d’un test reproduisant le cas.
+Fixes must be accompanied by a clear description of the problem, its systemic impact, and, when possible, a test reproducing the case.
 
-### Ameliorations de performance et de scalabilite
+### Performance and Scalability Improvements
 
-Les contributions portant sur :
+Contributions on:
 
-- la consommation CPU / mémoire ;
-- la gestion des régions ou chunks de simulation ;
-- la montée en charge serveur ;
-- l’optimisation des accès disque et de la persistance ;
+- CPU / memory consumption;
+- region or chunk simulation management;
+- server scaling;
+- disk access and persistence optimization;
 
-sont fortement encouragées.
+are strongly encouraged.
 
-Toute optimisation doit privilégier la lisibilité, la maintenabilité et la stabilité plutôt qu’un gain marginal isolé.
+Any optimization must prioritize readability, maintainability, and stability over an isolated marginal gain.
 
-### Documentation technique
+### Technical Documentation
 
-La documentation est une contribution à part entière.
+Documentation is a contribution in its own right.
 
-Sont notamment encouragés :
+Particularly encouraged:
 
-- documentation de l’architecture ;
-- schémas de flux de simulation ;
-- description des invariants du système ;
-- guides de déploiement serveur ;
-- documentation des APIs publiques et des modules.
+- architecture documentation;
+- simulation flow diagrams;
+- system invariant descriptions;
+- server deployment guides;
+- public API and module documentation.
 
-Une contribution documentaire claire est souvent plus précieuse qu’une fonctionnalité supplémentaire.
+Clear documentary contribution is often more valuable than an additional feature.
 
-### Tests validation et observabilite
+### Tests Validation and Observability
 
-Le projet valorise les contributions liées à :
+The project values contributions related to:
 
-- tests unitaires et d’intégration ;
-- outils de validation de la persistance ;
-- mécanismes de replay ou de simulation déterministe ;
-- métriques, logs structurés et outils de diagnostic.
+- unit and integration tests;
+- persistence validation tools;
+- replay or deterministic simulation mechanisms;
+- metrics, structured logs, and diagnostic tools.
 
-Toute amélioration facilitant le débogage d’un monde persistant est considérée comme stratégique.
+Any improvement facilitating debugging of a persistent world is considered strategic.
 
-### Modules optionnels et extensions
+### Optional Modules and Extensions
 
-Les fonctionnalités non essentielles au noyau peuvent être proposées sous forme de **modules optionnels**, à condition de :
+Features non-essential to the core may be proposed as **optional modules**, provided they:
 
-- respecter strictement les APIs publiques ;
-- ne pas introduire de dépendance vers le cœur ;
-- rester désactivables sans impact sur la simulation.
+- strictly respect public APIs;
+- do not introduce a dependency toward the core;
+- remain deactivatable without impact on simulation.
 
-Les modules expérimentaux sont acceptés tant qu’ils restent clairement identifiés comme tels.
+Experimental modules are accepted as long as they remain clearly identified as such.
 
-### Outils de developpement et d’exploitation
+### Development and Operational Tools
 
-Les outils facilitant :
+Tools facilitating:
 
-- le développement local ;
-- le profiling ;
-- le monitoring serveur ;
-- la gestion de mondes persistants ;
-- l’administration et la maintenance ;
+- local development;
+- profiling;
+- server monitoring;
+- persistent world management;
+- administration and maintenance;
 
-sont des contributions bienvenues, même s’ils ne sont pas directement visibles côté client.
+are welcome contributions, even if not directly visible on the client side.
 
-## Contributions explicitement refusees
+## Explicitly Rejected Contributions
 
-Afin de préserver la cohérence, la maintenabilité et la viabilité à long terme de la plateforme, certaines catégories de contributions sont explicitement refusées.
+To preserve the platform's coherence, maintainability, and long-term viability, certain categories of contributions are explicitly rejected.
 
-### Fonctionnalites orientees jeu ou fun immediat
+### Game-Oriented or Immediate Fun Features
 
-Les contributions visant principalement à :
+Contributions primarily aiming to:
 
-- améliorer l’expérience ludique à court terme ;
-- ajouter des mécaniques de gameplay isolées ;
-- enrichir le contenu sans impact systémique ;
+- improve short-term game experience;
+- add isolated gameplay mechanics;
+- enrich content without systemic impact;
 
-ne sont pas acceptées dans le noyau du projet.
+are not accepted in the project core.
 
-Le projet fournit des systèmes, pas des expériences ludiques clés en main.
+The project provides systems, not ready-made game experiences.
 
-### Narration imposee ou logique scenarisee
+### Imposed Narration or Scripted Logic
 
-Toute contribution introduisant :
+Any contribution introducing:
 
-- des quêtes linéaires ;
-- des événements scriptés obligatoires ;
-- une progression narrative imposée ;
+- linear quests;
+- mandatory scripted events;
+- imposed narrative progression;
 
-est incompatible avec le principe de narration émergente.
+is incompatible with the principle of emergent narration.
 
-Les histoires doivent découler des systèmes simulés, jamais les précéder.
+Stories must stem from simulated systems, never precede them.
 
-### Centralite ou traitement special du joueur
+### Player Centrality or Special Treatment
 
-Les contributions supposant :
+Contributions assuming:
 
-- un rôle unique ou privilégié du joueur ;
-- des règles spécifiques applicables uniquement aux joueurs ;
-- une adaptation artificielle du monde à la présence humaine ;
+- a unique or privileged player role;
+- specific rules applicable only to players;
+- artificial world adaptation to human presence;
 
-sont refusées.
+are rejected.
 
-Le joueur est un acteur parmi d’autres, soumis aux mêmes règles que les entités simulées.
+The player is an actor among others, subject to the same rules as simulated entities.
 
-### Logique client autoritaire ou couplee a la simulation
+### Authoritative Client Logic or Coupled to Simulation
 
-Toute logique critique exécutée côté client est proscrite.
+Any critical logic executed on the client side is prohibited.
 
-Cela inclut notamment :
+This notably includes:
 
-- décisions de simulation prises côté client ;
-- calculs impactant l’état persistant du monde ;
-- dépendance directe entre le client et le cœur serveur.
+- simulation decisions made on the client side;
+- calculations impacting the world's persistent state;
+- direct dependency between client and server core.
 
-Le client n’est jamais une source de vérité.
+The client is never a source of truth.
 
-### IA opaque non deterministe ou magique
+### Opaque Non-Deterministic or Magical AI
 
-Les contributions reposant sur :
+Contributions relying on:
 
-- des décisions non explicables ;
-- des modèles non reproductibles ;
-- une dépendance forte à des systèmes génératifs externes ;
+- unexplainable decisions;
+- non-reproducible models;
+- strong dependency on external generative systems;
 
-ne sont pas acceptées dans le noyau de simulation.
+are not accepted in the simulation core.
 
-Les comportements doivent pouvoir être compris, observés et reproduits.
+Behaviors must be understandable, observable, and reproducible.
 
-### Couplage fort avec une technologie ou un moteur specifique
+### Strong Coupling with a Specific Technology or Engine
 
-Toute contribution :
+Any contribution:
 
-- liant le cœur de la simulation à un moteur graphique ;
-- introduisant une dépendance non justifiée à une technologie fermée ;
-- empêchant l’exécution serveur headless ;
+- linking the simulation core to a graphics engine;
+- introducing an unjustified dependency on a closed technology;
+- preventing headless server execution;
 
-sera refusée.
+will be rejected.
 
-Le projet doit rester indépendant de tout client ou moteur particulier.
+The project must remain independent of any particular client or engine.
 
-### Ajout de contenu par defaut dans le noyau
+### Adding Default Content to the Core
 
-Le noyau n’a pas vocation à contenir :
+The core is not intended to contain:
 
-- des mondes prédéfinis ;
-- des factions “officielles” ;
-- des règles de jeu imposées ;
-- des assets graphiques obligatoires.
+- predefined worlds;
+- "official" factions;
+- imposed game rules;
+- mandatory graphical assets.
 
-Le contenu appartient aux serveurs, pas à la plateforme.
+Content belongs to servers, not the platform.
 
-## Architecture regles techniques et contraintes
+## Architecture Technical Rules and Constraints
 
-Toute contribution doit respecter l’architecture globale du projet et ses contraintes techniques, conçues pour garantir la stabilité, la persistance et l’évolutivité du système sur le long terme.
+Any contribution must respect the project's overall architecture and technical constraints, designed to guarantee system stability, persistence, and evolutivity in the long term.
 
-### Separation stricte entre noyau et extensions
+### Strict Separation Between Core and Extensions
 
-Le projet est structuré autour :
+The project is structured around:
 
-- d’un **noyau de simulation minimal et stable** ;
-- de **modules et extensions optionnels**.
+- a **minimal and stable simulation core**;
+- **optional modules and extensions**.
 
-Le noyau :
+The core:
 
-- contient exclusivement les mécanismes indispensables à la simulation persistante ;
-- expose des APIs publiques, documentées et versionnées ;
-- ne dépend d’aucun module externe.
+- contains exclusively mechanisms essential to persistent simulation;
+- exposes public, documented, and versioned APIs;
+- depends on no external module.
 
-Toute fonctionnalité non strictement essentielle doit être implémentée sous forme de module.
+Any non-strictly essential feature must be implemented as a module.
 
-### Stabilite des APIs et gestion des breaking changes
+### API Stability and Breaking Change Management
 
-Les APIs publiques du noyau sont considérées comme **stables**.
+The core's public APIs are considered **stable**.
 
-Par conséquent :
+Consequently:
 
-- toute modification incompatible doit être explicitement justifiée ;
-- aucun breaking change ne sera accepté sans discussion préalable ;
-- les impacts sur les modules existants doivent être clairement documentés.
+- any incompatible modification must be explicitly justified;
+- no breaking change will be accepted without prior discussion;
+- impacts on existing modules must be clearly documented.
 
-La compatibilité ascendante est une priorité.
+Backward compatibility is a priority.
 
-### Determinisme et reproductibilite
+### Determinism and Reproducibility
 
-Les systèmes du noyau doivent être :
+Core systems must be:
 
-- déterministes à entrée égale ;
-- reproductibles dans le temps ;
-- observables et débogables.
+- deterministic given equal inputs;
+- reproducible over time;
+- observable and debuggable.
 
-Toute logique introduisant des comportements non reproductibles doit être isolée, documentée et justifiée.
+Any logic introducing non-reproducible behaviors must be isolated, documented, and justified.
 
-### Persistance explicite et tracable
+### Explicit and Traceable Persistence
 
-Les données persistantes du monde doivent :
+Persistent world data must:
 
-- être écrites explicitement sur disque ;
-- pouvoir être rejouées ou inspectées ;
-- ne pas dépendre d’états implicites ou transitoires.
+- be explicitly written to disk;
+- be replayable or inspectable;
+- not depend on implicit or transient states.
 
-Les mécanismes de persistance doivent être conçus pour survivre aux redémarrages, aux crashs et aux migrations de version.
+Persistence mechanisms must be designed to survive restarts, crashes, and version migrations.
 
-### Execution serveur headless obligatoire
+### Mandatory Headless Server Execution
 
-Le serveur doit pouvoir fonctionner :
+The server must be able to run:
 
-- sans interface graphique ;
-- sans dépendance client ;
-- sans moteur de rendu.
+- without a graphical interface;
+- without client dependency;
+- without a rendering engine.
 
-Toute contribution introduisant une dépendance graphique directe ou indirecte côté serveur sera refusée.
+Any contribution introducing a direct or indirect graphics dependency on the server side will be rejected.
 
-### Lisibilite simplicite et maintenabilite
+### Readability Simplicity and Maintainability
 
-La lisibilité du code est une exigence fonctionnelle.
+Code readability is a functional requirement.
 
-Les contributions doivent privilégier :
+Contributions must prioritize:
 
-- des abstractions simples ;
-- des dépendances minimales ;
-- un code compréhensible sans contexte implicite.
+- simple abstractions;
+- minimal dependencies;
+- code understandable without implicit context.
 
-Un code “intelligent” mais difficile à maintenir sera rejeté au profit d’une solution plus simple et plus robuste.
+"Smart" but hard-to-maintain code will be rejected in favor of a simpler and more robust solution.
 
-## Workflow de contribution
+## Contribution Workflow
 
-Toute contribution au projet suit un processus standardisé afin de garantir la qualité, la cohérence et la traçabilité des changements.
+Any contribution to the project follows a standardized process to ensure quality, coherence, and traceability of changes.
 
-### Discussion prealable recommandee
+### Recommended Prior Discussion
 
-Pour toute contribution significative (nouvelle fonctionnalité, modification du noyau, refactorisation majeure), il est fortement recommandé d’ouvrir une issue ou une discussion avant d’écrire du code.
+For any significant contribution (new feature, core modification, major refactoring), it is strongly recommended to open an issue or discussion before writing code.
 
-Cela permet de :
+This allows:
 
-- vérifier l’alignement avec la philosophie du projet ;
-- éviter du travail inutile ;
-- anticiper les impacts systémiques.
+- verifying alignment with project philosophy;
+- avoiding unnecessary work;
+- anticipating systemic impacts.
 
-### Fork et branches
+### Fork and Branches
 
-Les contributions se font via un fork du dépôt principal.
+Contributions are made via a fork of the main repository.
 
-Les branches doivent suivre une convention claire :
+Branches must follow a clear convention:
 
-- `fix/description-courte`
-- `feature/description-courte`
-- `doc/description-courte`
-- `refactor/description-courte`
+- `fix/short-description`
+- `feature/short-description`
+- `doc/short-description`
+- `refactor/short-description`
 
-Chaque branche doit être limitée à un objectif précis.
+Each branch must be limited to a specific objective.
 
 ### Commits
 
-Les commits doivent :
+Commits must:
 
-- être atomiques ;
-- avoir un message clair et descriptif ;
-- expliquer le *pourquoi* du changement, pas seulement le *quoi*.
+- be atomic;
+- have a clear and descriptive message;
+- explain the *why* of the change, not just the *what*.
 
-Les commits correctifs ou temporaires doivent être nettoyés avant la soumission de la Pull Request.
+Corrective or temporary commits must be cleaned before Pull Request submission.
 
 ### Pull Requests
 
-Toute contribution passe par une Pull Request.
+Any contribution goes through a Pull Request.
 
-La Pull Request doit inclure :
+The Pull Request must include:
 
-- une description du problème ou de l’objectif ;
-- la justification systémique du changement ;
-- les impacts sur la simulation, la persistance et la compatibilité ;
-- les tests ajoutés ou adaptés, le cas échéant.
+- a description of the problem or objective;
+- the systemic justification for the change;
+- impacts on simulation, persistence, and compatibility;
+- tests added or adapted, if applicable.
 
-Les Pull Requests incomplètes ou insuffisamment justifiées peuvent être fermées sans revue approfondie.
+Incomplete or insufficiently justified Pull Requests may be closed without thorough review.
 
-### Revue et iterations
+### Review and Iterations
 
-Les contributions sont revues par les mainteneurs du projet.
+Contributions are reviewed by project maintainers.
 
-Des modifications ou clarifications peuvent être demandées. L’absence de réponse prolongée peut entraîner la fermeture de la Pull Request.
+Modifications or clarifications may be requested. Prolonged lack of response may result in Pull Request closure.
 
-La revue porte autant sur l’architecture que sur le code lui-même.
+Review covers architecture as much as the code itself.
 
-## Processus de validation et gouvernance
+## Validation Process and Governance
 
-Ce projet est open-source, mais il n’est pas dépourvu de gouvernance.
+This project is open-source, but it is not without governance.
 
-Les décisions techniques et architecturales sont prises dans l’intérêt du projet à long terme, et non en fonction du volume de contributions ou de la popularité d’une proposition.
+Technical and architectural decisions are made in the project's long-term interest, not based on contribution volume or proposal popularity.
 
-### Mainteneurs et responsabilite
+### Maintainers and Responsibility
 
-Le projet est piloté par un groupe restreint de mainteneurs responsables du noyau et de la vision globale.
+The project is led by a small group of maintainers responsible for the core and overall vision.
 
-Les mainteneurs :
+Maintainers:
 
-- définissent et protègent l’architecture du projet ;
-- valident ou refusent les contributions ;
-- garantissent la cohérence à long terme de la plateforme.
+- define and protect the project's architecture;
+- validate or reject contributions;
+- guarantee the platform's long-term coherence.
 
-La responsabilité du noyau ne peut être déléguée implicitement par une Pull Request.
+Core responsibility cannot be implicitly delegated by a Pull Request.
 
-### Criteres de validation des contributions
+### Contribution Validation Criteria
 
-Les contributions sont évaluées selon les critères suivants :
+Contributions are evaluated according to the following criteria:
 
-- alignement avec la philosophie du projet ;
-- impact sur la stabilité et la persistance ;
-- clarté et maintenabilité du code ;
-- compatibilité avec l’architecture existante ;
-- bénéfice systémique à long terme.
+- alignment with project philosophy;
+- impact on stability and persistence;
+- code clarity and maintainability;
+- compatibility with existing architecture;
+- long-term systemic benefit.
 
-Une contribution techniquement correcte peut être refusée si elle ne respecte pas ces critères.
+A technically correct contribution may be rejected if it does not meet these criteria.
 
-### Refus desaccords et arbitrage
+### Rejection Disagreements and Arbitration
 
-Le refus d’une contribution est une décision normale et fait partie du processus de gouvernance.
+Rejecting a contribution is a normal decision and part of the governance process.
 
-Les mainteneurs peuvent refuser une contribution :
+Maintainers may reject a contribution:
 
-- sans obligation de proposer une alternative ;
-- sans entrer dans un débat prolongé ;
-- sans justification exhaustive au-delà des principes établis.
+- without obligation to propose an alternative;
+- without entering into a prolonged debate;
+- without exhaustive justification beyond established principles.
 
-Les désaccords doivent rester techniques, argumentés et respectueux.
+Disagreements must remain technical, argued, and respectful.
 
-### Evolution du projet
+### Project Evolution
 
-La vision et les principes du projet peuvent évoluer, mais uniquement :
+The project's vision and principles may evolve, but only:
 
-- de manière collective ;
-- via des discussions structurées ;
-- avec un impact clairement mesuré sur l’existant.
+- collectively;
+- via structured discussions;
+- with clearly measured impact on existing work.
 
-Aucune Pull Request isolée ne peut modifier à elle seule les fondations du projet.
+No isolated Pull Request can alone modify the project's foundations.
 
-## Code de conduite et communication
+## Code of Conduct and Communication
 
-Le projet vise à maintenir un environnement de collaboration sain, respectueux et orienté vers des échanges techniques constructifs.
+The project aims to maintain a healthy, respectful collaboration environment oriented toward constructive technical exchanges.
 
-### Respect et professionnalisme
+### Respect and Professionalism
 
-Toute interaction (issues, discussions, revues de code, commentaires) doit rester :
+All interactions (issues, discussions, code reviews, comments) must remain:
 
-- respectueuse ;
-- factuelle ;
-- centrée sur le contenu technique.
+- respectful;
+- factual;
+- focused on technical content.
 
-Les attaques personnelles, les jugements de valeur et les comportements agressifs ne sont pas tolérés.
+Personal attacks, value judgments, and aggressive behaviors are not tolerated.
 
-### Desaccords techniques
+### Technical Disagreements
 
-Les désaccords sont normaux et attendus dans un projet d’infrastructure.
+Disagreements are normal and expected in an infrastructure project.
 
-Ils doivent :
+They must:
 
-- être argumentés techniquement ;
-- s’appuyer sur des faits, des mesures ou des principes établis ;
-- éviter toute personnalisation du débat.
+- be technically argued;
+- rely on facts, measurements, or established principles;
+- avoid any personalization of the debate.
 
-Le désaccord n’implique jamais une remise en cause des intentions ou des compétences.
+Disagreement never implies questioning intentions or skills.
 
-### Communication et attentes
+### Communication and Expectations
 
-Les mainteneurs contribuent sur leur temps et selon leurs priorités.
+Maintainers contribute on their time and according to their priorities.
 
-Il n’existe :
+There is:
 
-- aucune obligation de réponse immédiate ;
-- aucune garantie d’acceptation d’une contribution ;
-- aucun engagement de roadmap publique.
+- no obligation for immediate response;
+- no guarantee of contribution acceptance;
+- no commitment to a public roadmap.
 
-Toute pression, insistance ou tentative de forcer une décision est contraire à l’esprit du projet.
+Any pressure, insistence, or attempt to force a decision is contrary to the project's spirit.
 
-### Application
+### Enforcement
 
-Les mainteneurs se réservent le droit de :
+Maintainers reserve the right to:
 
-- modérer les discussions ;
-- fermer des issues ou Pull Requests ;
-- limiter ou suspendre l’accès aux contributions ;
+- moderate discussions;
+- close issues or Pull Requests;
+- limit or suspend access to contributions;
 
-lorsque le comportement d’un participant nuit au bon fonctionnement du projet.
+when a participant's behavior harms the project's proper functioning.

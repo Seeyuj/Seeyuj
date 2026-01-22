@@ -1,7 +1,7 @@
-# Roadmap – Plateforme de mondes sandbox persistants
+# Roadmap – Persistent Sandbox Worlds Platform
 
-> Cette roadmap décrit les **grandes étapes de construction** de la plateforme.  
-> Elle n’est **ni exhaustive, ni contractuelle**, et peut évoluer selon les décisions de gouvernance.
+> This roadmap describes the **major construction steps** of the platform.  
+> It is **neither exhaustive nor contractual**, and may evolve according to governance decisions.
 
 ## Navigation
 
@@ -13,157 +13,157 @@
 - [`SECURITY.md`](SECURITY.md)
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-La priorité absolue du projet est la **solidité du noyau de simulation**, sa **maintenabilité** et sa **pérennité** sur le long terme.
+The project's absolute priority is the **solidity of the simulation core**, its **maintainability**, and its **long-term sustainability**.
 
 ---
 
-## Phase 0 – Fondations conceptuelles (actuelle)
+## Phase 0 – Conceptual Foundations (Current)
 
-🎯 **Objectif : verrouiller la vision et les invariants**
+🎯 **Objective: Lock in the vision and invariants**
 
-Cette phase vise à garantir que le projet repose sur des bases claires, compréhensibles et défendables dans le temps.
+This phase aims to ensure that the project rests on clear, understandable, and defensible foundations over time.
 
-Livrables attendus :
-- Vision et principes fondamentaux clairement documentés
-- Définition explicite de ce que le projet **est** et **n’est pas**
-- Séparation nette entre :
-  - noyau de simulation
-  - modules optionnels
+Expected deliverables:
+- Vision and fundamental principles clearly documented
+- Explicit definition of what the project **is** and **is not**
+- Clear separation between:
+  - simulation core
+  - optional modules
   - clients
-- Documentation fondatrice :
+- Foundational documentation:
   - README
   - CONTRIBUTING
   - Code of Conduct
-  - documents d’architecture initiaux
+  - initial architecture documents
 
-Aucune implémentation “fonctionnelle” n’est prioritaire tant que les fondations ne sont pas stabilisées.
-
----
-
-## Phase 1 – Noyau de simulation minimal (serveur seul)
-
-🎯 **Objectif : un monde qui existe sans client**
-
-Cette phase valide le cœur du projet : un serveur capable de simuler un monde persistant **sans aucun rendu graphique**.
-
-Fonctionnalités clés :
-- Boucle de simulation déterministe
-- Système de temps persistant
-- Représentation de l’espace (zones / régions / chunks)
-- Entités persistantes (état, identité, cycle de vie)
-- Règles systémiques de base
-- Persistance explicite sur disque
-- Reprise après arrêt / crash
-- Exécution serveur headless
-
-À ce stade :
-- aucun client graphique
-- aucune UI
-- aucune logique orientée joueur
-
-Le monde doit être observable via logs, outils CLI ou dumps d’état.
+No "functional" implementation is a priority until foundations are stabilized.
 
 ---
 
-## Phase 2 – Architecture modulaire et APIs publiques
+## Phase 1 – Minimal Simulation Core (Server Only)
 
-🎯 **Objectif : permettre l’extension sans fragiliser le noyau**
+🎯 **Objective: A world that exists without a client**
 
-Une fois le noyau minimal stable, le focus passe sur l’extensibilité contrôlée.
+This phase validates the project's heart: a server capable of simulating a persistent world **without any graphical rendering**.
 
-Axes principaux :
-- Définition d’APIs publiques versionnées
-- Système de modules optionnels
-- Chargement / activation / désactivation de modules
-- Isolation stricte entre noyau et extensions
-- Gestion de compatibilité et versioning
-- Documentation des invariants du noyau
+Key features:
+- Deterministic simulation loop
+- Persistent time system
+- Space representation (zones / regions / chunks)
+- Persistent entities (state, identity, lifecycle)
+- Basic systemic rules
+- Explicit persistence to disk
+- Recovery after shutdown / crash
+- Headless server execution
 
-Cette phase est critique pour :
-- éviter le *feature creep*
-- garantir la longévité du projet
-- permettre une contribution communautaire saine
+At this stage:
+- no graphical client
+- no UI
+- no player-oriented logic
 
----
-
-## Phase 3 – Simulation avancée et scalabilité
-
-🎯 **Objectif : un monde crédible à grande échelle**
-
-Le monde doit pouvoir :
-- s’agrandir
-- se complexifier
-- survivre dans le temps
-
-Axes de travail :
-- Simulation par régions avec niveaux de détail
-- Optimisation CPU / mémoire
-- Gestion de grandes quantités d’entités
-- Événements systémiques (économie, pénuries, migrations, conflits)
-- Outils de replay et de validation déterministe
-- Observabilité avancée (metrics, diagnostics)
-
-Le focus reste **systémique**, jamais ludique.
+The world must be observable via logs, CLI tools, or state dumps.
 
 ---
 
-## Phase 4 – Client de référence (Unreal Engine)
+## Phase 2 – Modular Architecture and Public APIs
 
-🎯 **Objectif : visualiser le monde, pas le définir**
+🎯 **Objective: Enable extension without weakening the core**
 
-Un client officiel basé sur Unreal Engine est introduit comme :
-- implémentation de référence
-- vitrine technique
-- outil de validation visuelle
+Once the minimal core is stable, the focus shifts to controlled extensibility.
 
-Caractéristiques :
-- Consommateur strict de l’état serveur
-- Aucun calcul critique côté client
-- Rendu moderne mais sobre
-- Standard graphique documenté
-- Pipeline d’assets cohérent et extensible
+Main axes:
+- Definition of versioned public APIs
+- Optional module system
+- Module loading / activation / deactivation
+- Strict isolation between core and extensions
+- Compatibility and versioning management
+- Documentation of core invariants
 
-Le client **ne pilote jamais** l’évolution du monde.
-
----
-
-## Phase 5 – Outils, SDK et ouverture communautaire
-
-🎯 **Objectif : faire du projet une vraie plateforme**
-
-Dernière phase structurante avant maturité :
-
-- SDK pour développeurs de modules
-- Outils d’administration de mondes persistants
-- Documentation avancée (guides, schémas, exemples)
-- Templates de serveurs
-- Gouvernance communautaire élargie
-- Process de contribution stabilisé
-
-Le projet devient alors une **infrastructure réutilisable**, indépendante de tout contenu officiel.
+This phase is critical to:
+- avoid feature creep
+- guarantee project longevity
+- enable healthy community contribution
 
 ---
 
-## Hors périmètre assumé
+## Phase 3 – Advanced Simulation and Scalability
 
-Cette roadmap **n’inclut pas** :
-- gameplay “fun-first”
-- équilibrage joueur
-- narration écrite
-- quêtes
-- cinématiques
-- contenu par défaut
-- monétisation
-- promesses marketing
+🎯 **Objective: A credible world at large scale**
 
-Ces éléments relèvent des **mondes créés à partir de la plateforme**, pas de la plateforme elle-même.
+The world must be able to:
+- grow
+- become more complex
+- survive over time
+
+Work axes:
+- Simulation by regions with detail levels
+- CPU / memory optimization
+- Management of large numbers of entities
+- Systemic events (economy, shortages, migrations, conflicts)
+- Replay and deterministic validation tools
+- Advanced observability (metrics, diagnostics)
+
+The focus remains **systemic**, never game-oriented.
 
 ---
 
-## Principe directeur
+## Phase 4 – Reference Client (Unreal Engine)
 
-Chaque étape est validée par une question unique :
+🎯 **Objective: Visualize the world, not define it**
 
-> **Le monde peut-il exister, évoluer et persister sans joueur ni client ?**
+An official client based on Unreal Engine is introduced as:
+- reference implementation
+- technical showcase
+- visual validation tool
 
-Si la réponse est non, la fondation n’est pas encore suffisante.
+Characteristics:
+- Strict consumer of server state
+- No critical calculations on the client side
+- Modern but sober rendering
+- Documented graphics standard
+- Coherent and extensible asset pipeline
+
+The client **never drives** world evolution.
+
+---
+
+## Phase 5 – Tools, SDK, and Community Opening
+
+🎯 **Objective: Make the project a true platform**
+
+Final structuring phase before maturity:
+
+- SDK for module developers
+- Tools for administering persistent worlds
+- Advanced documentation (guides, diagrams, examples)
+- Server templates
+- Expanded community governance
+- Stabilized contribution process
+
+The project then becomes a **reusable infrastructure**, independent of any official content.
+
+---
+
+## Out of Scope
+
+This roadmap **does not include**:
+- "fun-first" gameplay
+- player balancing
+- written narration
+- quests
+- cinematics
+- default content
+- monetization
+- marketing promises
+
+These elements belong to **worlds created from the platform**, not to the platform itself.
+
+---
+
+## Guiding Principle
+
+Each step is validated by a single question:
+
+> **Can the world exist, evolve, and persist without a player or client?**
+
+If the answer is no, the foundation is not yet sufficient.
