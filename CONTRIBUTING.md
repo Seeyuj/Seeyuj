@@ -2,7 +2,7 @@
 
 Thank you for your interest in this project.
 
-Before any contribution (code, documentation, ideas, issues, discussions), please read the [`readme.md`](readme.md) and ensure that your proposal aligns with the repository's objective: **providing a simulation core for persistent sandbox worlds**, maintainable in the long term.
+Before any contribution (code, documentation, ideas, issues, discussions), please read the [`README.md`](README.md) and ensure that your proposal aligns with the repository's objective: **providing a simulation core for persistent sandbox worlds**, maintainable in the long term.
 
 This repository is neither a video game, nor a graphics engine, nor a narrative RPG. The project's priority is **systemic coherence**, **core stability**, **real persistence** of the simulated world, and **maintainability over several years**.
 
@@ -10,7 +10,7 @@ Some contributions, even technically correct, may be rejected if they do not ser
 
 ## Navigation
 
-- [`readme.md`](readme.md)
+- [`README.md`](README.md)
 - [`ARCHITECTURE.md`](doc/ARCHITECTURE.md)
 - [`DECISIONS.md`](doc/DECISIONS.md)
 - [`ROADMAP.md`](doc/ROADMAP.md)

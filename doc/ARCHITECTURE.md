@@ -2,7 +2,7 @@
 
 ## Navigation
 
-- [`readme.md`](readme.md)
+- [`README.md`](../README.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - [`DECISIONS.md`](DECISIONS.md)
 - [`ROADMAP.md`](ROADMAP.md)
