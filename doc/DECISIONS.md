@@ -276,32 +276,32 @@ The project aims for **years of life**, not a quick demo.
 
 ---
 
-## D-010 — Rust pour le Noyau
+## D-010 — Rust for the Core
 
 **Status**: Accepted  
 
 ### Decision
 
-Le **noyau de simulation** est développé en **Rust**.
+The **simulation core** is developed in **Rust**.
 
 ### Justification
 
-Rust offre un équilibre optimal pour un projet de plateforme persistante :
+Rust offers an optimal balance for a persistent platform project:
 
-- **Sécurité mémoire** : garantie à la compilation, essentielle pour la stabilité à long terme ;
-- **Performance** : performances natives sans compromis sur la sécurité ;
-- **Concurrence** : modèle de concurrence sûr et puissant pour les simulations multi-entités ;
-- **Maintenabilité** : système de types fort et écosystème mature favorisant la maintenabilité sur plusieurs années ;
-- **Interopérabilité** : capacité à exposer des APIs C-compatibles pour les clients dans d'autres langages ;
-- **Fiabilité** : absence de comportements indéfinis, cruciale pour la persistance et la reproductibilité.
+- **Memory safety**: compile-time guarantees, essential for long-term stability;
+- **Performance**: native performance without compromising safety;
+- **Concurrency**: a safe and powerful concurrency model for multi-entity simulations;
+- **Maintainability**: a strong type system and mature ecosystem that support multi-year maintenance;
+- **Interoperability**: ability to expose C-compatible APIs for clients in other languages;
+- **Reliability**: absence of undefined behavior, crucial for persistence and reproducibility.
 
 ### Consequences
 
-- Le noyau de simulation est écrit en Rust.
-- Les clients peuvent être développés dans n'importe quel langage compatible avec les APIs exposées.
-- Les modules optionnels peuvent être en Rust ou dans d'autres langages selon leur nature.
-- La compilation Rust garantit la sécurité mémoire sans runtime overhead.
-- L'écosystème Rust (crates) peut être utilisé pour les fonctionnalités non-critiques.
+- The simulation core is written in Rust.
+- Clients can be developed in any language compatible with the exposed APIs.
+- Optional modules can be written in Rust or other languages depending on their nature.
+- Rust compilation guarantees memory safety with no runtime overhead.
+- The Rust ecosystem (crates) can be used for non-critical features.
 
 ---
 
