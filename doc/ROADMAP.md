@@ -42,26 +42,130 @@ No "functional" implementation is a priority until foundations are stabilized.
 
 ## Phase 1 – Minimal Simulation Core (Server Only)
 
-🎯 **Objective: A world that exists without a client**
+🟢 **Status: Foundational phase — non-negotiable**
 
-This phase validates the project's heart: a server capable of simulating a persistent world **without any graphical rendering**.
+🎯 **Single (exclusive) objective**
 
-Key features:
-- Deterministic simulation loop
-- Persistent time system
-- Space representation (zones / regions / chunks)
-- Persistent entities (state, identity, lifecycle)
-- Basic systemic rules
-- Explicit persistence to disk
-- Recovery after shutdown / crash
-- Headless server execution
+Prove that a simulated world can exist, evolve, and persist with **no client, no player, and no graphical interface**.
 
-At this stage:
-- no graphical client
-- no UI
-- no player-oriented logic
+This phase explicitly does **not** target:
+- feature richness
+- performance
+- advanced extensibility
+- user experience
 
-The world must be observable via logs, CLI tools, or state dumps.
+👉 It only aims to make the world's autonomous existence undeniable.
+
+🧠 **Guiding principle**
+
+If the server can run alone for hours, is killed abruptly, restarts, and the world continues as if nothing happened, then Phase 1 is validated.
+
+Anything that does not directly serve this proof is out of scope.
+
+✅ **Mandatory capabilities (strict scope)**
+
+1. **Deterministic simulation loop**
+   - Explicit tick execution
+   - Strictly controlled execution order
+   - No implicit dependencies:
+     - no direct system clock access
+     - no non-injected RNG
+   - Same inputs ⇒ same outputs
+
+   📌 Determinism is a functional requirement, not an optimization.
+
+2. **Persistent simulated time**
+   - World time is simulated data
+   - It progresses independently of any human presence
+   - It is explicitly stored and restored on restart
+   - No dependency on real time
+
+3. **Minimal spatial representation**
+   - A structured space exists (zones / regions / chunks — free form)
+   - Space is persistent
+   - Space can be partially loaded / simulated
+   - No realism or spatial optimization goals
+
+   📌 Space may be abstract. It only needs to exist.
+
+4. **Persistent non-player entities**
+   - Entities have:
+     - stable identity
+     - internal state
+     - lifecycle
+   - They exist without players, evolve via simple systemic rules, and survive restarts
+
+   📌 No “player” entities. No exceptions.
+
+5. **Minimal systemic rules**
+   - At least one causal rule exists (e.g., consumption, degradation, transformation, movement)
+   - It produces observable state changes
+   - It depends only on the simulation
+   - No gameplay or balancing goals
+
+   📌 A single rule is enough if it is real and persistent.
+
+6. **Explicit on-disk persistence**
+   - Every world mutation is explicitly written to disk and traceable
+   - The world must never vanish when the server stops
+   - No reliance on implicit in-memory state
+
+   Persistence is critical.
+
+7. **Recovery after stop or crash**
+   - The server may be killed abruptly and restarted
+   - The world is automatically restored, coherent, and requires no human intervention
+
+   📌 A lost world = Phase 1 failure.
+
+8. **Headless server execution**
+   - No graphical interface
+   - No dependency on any rendering engine
+   - No connected client required
+   - “Solo” = local server; “Multi” = the same server, remote
+
+👁️ **Minimal observability required**
+
+The world must be observable without a UI. Acceptable means:
+- structured logs
+- state dumps
+- basic CLI tools
+- diagnostic files
+
+📌 No graphical visualization is required.
+
+⛔ **Explicit out of scope (forbidden in Phase 1)**
+
+Formally excluded:
+- any graphical client
+- any UI (even advanced debug UI)
+- any player-oriented logic
+- optional modules
+- advanced AI
+- complex economy
+- advanced networking
+- CPU/memory optimization
+- parallelism
+- balancing or “fun”
+- graphics standards
+- stabilized public API
+
+👉 Introducing any of these invalidates Phase 1.
+
+🧪 **Validation criteria (measurable)**
+
+Phase 1 is complete only if:
+- the server can run alone indefinitely
+- the world evolves without human interaction
+- a restart destroys nothing
+- two runs with the same inputs produce the same world
+- the server has zero graphical dependencies
+
+🧱 **Final rule (non-negotiable)**
+
+Phase 1 is not meant to be impressive. It is meant to be irrefutable.
+
+Anything that does not help prove the world's autonomous, persistent existence does not belong here.
 
 ---
 

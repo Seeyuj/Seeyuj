@@ -5,3 +5,4 @@ edition.workspace = true
 
 [dependencies]
 sy_types.workspace = true
+serde.workspace = true
