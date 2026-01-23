@@ -51,9 +51,8 @@ fn validate_create_world(cmd: &CreateWorldCmd) -> Vec<ValidationError> {
 }
 
 fn validate_spawn_entity(_cmd: &SpawnEntityCmd) -> Vec<ValidationError> {
-    let errors = Vec::new();
     // Basic validation - can be extended later
-    errors
+    Vec::new()
 }
 
 fn validate_create_zone(cmd: &CreateZoneCmd) -> Vec<ValidationError> {

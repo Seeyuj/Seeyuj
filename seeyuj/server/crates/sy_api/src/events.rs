@@ -158,18 +158,13 @@ pub enum DespawnReason {
 }
 
 /// Generic property value for flexible property changes
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub enum PropertyValue {
+    #[default]
     None,
     Int(i64),
     UInt(u64),
     Float(f64),
     Bool(bool),
     String(String),
-}
-
-impl Default for PropertyValue {
-    fn default() -> Self {
-        PropertyValue::None
-    }
 }
