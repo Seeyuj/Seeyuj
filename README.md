@@ -47,7 +47,6 @@ Most game engines solve the problem of *rendering* and *input*. We are solving t
 Building on SeeYuj means grappling with deep, fascinating engineering challenges:
 *   How do you simulate a million entities without melting the CPU?
 *   How do you ensure a simulation run today produces the *exact* same result ten years from now?
-*   How do you design an economy that can't be exploited by cheats?
 
 **Join us if:**
 *   You are tired of "gameplay code" and want to write **system architectures**.
