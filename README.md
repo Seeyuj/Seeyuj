@@ -1,44 +1,104 @@
-# See-Yuj
+# SeeYuj
 
-Persistent sandbox worlds **simulation platform** (not a game).
+> **Worlds shouldn't end just because the server restarts.**
+> An infrastructure for persistent, autonomous realities.
 
-## Repository layout
+🔗 GitHub: [https://github.com/Seeyuj/Seeyuj](https://github.com/Seeyuj/Seeyuj)
+🧵 Follow: [https://x.com/SeeYuj](https://x.com/SeeYuj)
 
-- `doc/`: authoritative project documentation (architecture, roadmap, decisions, policy)
-- `seeyuj/server/`: Rust workspace (server-side crates, bins, examples)
-- `seeyuj/schemas/`: protocol/schema notes (future wire format)
-- `seeyuj/clients/`: placeholder for future clients (rendering/UI)
+---
 
-## Core invariants (short)
+## The Manifesto
 
-- **Authoritative server**: the server is the single source of truth.
-- **Determinism**: given identical inputs, the core must produce identical outputs.
-- **Strict layering**: `sy_core` is pure (no I/O, no std RNG/time; only injected ports).
-- **Event sourcing**: state changes are captured as events and can be replayed.
+SeeYuj is not a game engine. It does not care about your frame rate, your polygons, or your shaders.
 
-See `doc/ARCHITECTURE.md` for the authoritative version.
+**SeeYuj cares about the Truth.**
 
-## Build prerequisites (Windows)
+It is a specialized kernel designed to run persistent simulations that continue to breathe, evolve, and function whether a player is watching or not. It is the "backend of the metaverse" stripped of the buzzwords and built on cold, hard systems engineering.
 
-You need the Rust toolchain available in your shell (`cargo` command).
+We believe that:
+1.  **Simulation > Narration.** Stories should emerge from systems colliding, not from scripts written by a designer.
+2.  **The World is Sovereign.** It exists without players. It does not pause. It does not wait.
+3.  **Determinism is King.** Same input + Same state = Same result. Always.
 
-Recommended:
+---
 
-1. Install Rust via rustup: `https://rustup.rs/`
-2. Open a new PowerShell session
-3. Verify: `cargo --version`
+## The Mission
 
-## Build / test (Rust workspace)
+**To enable the creation of persistent worlds without the infrastructural headache.**
 
-From `seeyuj/server/`:
+Building a living, breathing world is usually a nightmare of database locks, race conditions, and netcode. Most creators give up before their world even starts ticking.
+
+SeeYuj handles the heavy lifting. We provide a bulletproof, reliable platform for **any type of world**—whether it's a sci-fi economy, a fantasy simulation, or a social experiment.
+
+We provide the **bedrock**:
+*   **Time:** A rigorous, deterministic clock.
+*   **Persistence:** State that survives crashes and restarts automatically.
+*   **Safety:** A foundation where your world's history is preserved forever.
+
+**You bring the rules. We bring the reality.**
+
+---
+
+## Why Build With Us?
+
+Most game engines solve the problem of *rendering* and *input*. We are solving the problem of **existence**.
+
+Building on SeeYuj means grappling with deep, fascinating engineering challenges:
+*   How do you simulate a million entities without melting the CPU?
+*   How do you ensure a simulation run today produces the *exact* same result ten years from now?
+*   How do you design an economy that can't be exploited by cheats?
+
+**Join us if:**
+*   You are tired of "gameplay code" and want to write **system architectures**.
+*   You want to build the foundation that thousands of future worlds will stand upon.
+*   You love Rust and uncompromising quality.
+
+---
+
+## Architecture
+
+We don't do "spaghetti code". SeeYuj is built on strict strict architectural layers (NIV 0 to NIV 4).
+
+*   **The Core (Rust):** Pure, isolated, standard-library only. It computes the next tick. That's it.
+*   **The Ports:** We use dependency inversion. The simulation doesn't know it's saving to a disk or sending packets. It just emits events.
+*   **The Modules:** Physics, Economics, AI. Plug them in, or write your own.
+
+> **Status: Foundation Phase 🟡**
+> The bedrock is setting. We are locking in the invariants. There is no gameplay yet. Only pure, unadulterated infrastructure.
+
+---
+
+## Quick Start
+
+You need **Rust**. That's it.
 
 ```bash
-cargo build --workspace
-cargo test --workspace
+# 1. Clone the reality
+git clone https://github.com/Seeyuj/Seeyuj.git
+cd Seeyuj
+
+# 2. Ignite the core
+cd seeyuj/server
+cargo run --bin server_d
 ```
 
-## Run (current status)
+If it compiles, the laws of physics are holding.
 
-The codebase is currently a **scaffold**: crates/binaries exist and follow the intended dependency boundaries, but most runtime logic is still TODO.
-The server binary prints a startup banner; the simulation loop and persistence are not implemented yet.
+---
 
+## Contributing
+
+**We are looking for Architects.**
+
+This is a project for those who enjoy the craft of software engineering. Whether you are a master of distributed systems, a determinism wizard, or a documentation artist, there is a place for you here.
+
+We maintain high standards because we are building a foundation for others to dream on.
+
+1.  Check out the [Issues](https://github.com/Seeyuj/Seeyuj/issues) to find a quest.
+2.  Read [CONTRIBUTING.md](CONTRIBUTING.md) to understand our laws of physics.
+3.  Open a PR and help us build the engine of the future.
+
+---
+
+> *"A persistent world is a system, not a story."*
