@@ -25,8 +25,8 @@ pub mod world;
 
 // Re-exports
 pub use determinism::{
-    compute_canonical_hash, run_deterministic, verify_determinism,
-    Checkpoint, DeterministicRunConfig, DeterministicRunResult, ScheduledCommand, XxHasher,
+    compute_canonical_hash, run_deterministic, verify_determinism, Checkpoint,
+    DeterministicRunConfig, DeterministicRunResult, ScheduledCommand, XxHasher,
 };
 pub use replay::{apply_event, replay_events};
 pub use sim::Simulation;

@@ -43,4 +43,3 @@ pub trait IStateHasher: Send {
         self.finalize()
     }
 }
-

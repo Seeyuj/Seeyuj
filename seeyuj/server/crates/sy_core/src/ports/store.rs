@@ -38,4 +38,3 @@ pub trait IWorldStore: Send {
     /// Get the path/location of a world's data (for logging/debugging).
     fn world_path(&self, world_id: &str) -> String;
 }
-

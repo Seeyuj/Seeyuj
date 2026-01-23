@@ -78,4 +78,3 @@ pub struct CreateZoneCmd {
     /// Optional name
     pub name: Option<String>,
 }
-

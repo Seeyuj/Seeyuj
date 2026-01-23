@@ -69,4 +69,3 @@ impl ValidationError {
 
 /// Result type for API operations
 pub type ApiResult<T> = Result<T, ApiError>;
-

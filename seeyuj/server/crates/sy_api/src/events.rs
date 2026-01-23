@@ -10,7 +10,9 @@
 //! - Identified by a monotonic event_id (for crash recovery)
 
 use serde::{Deserialize, Serialize};
-use sy_types::{EntityId, EntityKind, EntityState, EventId, RngSeed, SimTime, Tick, WorldPos, ZoneId};
+use sy_types::{
+    EntityId, EntityKind, EntityState, EventId, RngSeed, SimTime, Tick, WorldPos, ZoneId,
+};
 
 use crate::commands::EntityProperties;
 
@@ -42,7 +44,11 @@ impl SimEvent {
 
     /// Create an event with a specific event_id (for replay)
     pub fn with_id(event_id: EventId, tick: Tick, data: EventData) -> Self {
-        SimEvent { event_id, tick, data }
+        SimEvent {
+            event_id,
+            tick,
+            data,
+        }
     }
 }
 
@@ -59,14 +65,9 @@ pub enum EventData {
         seed: RngSeed,
     },
     /// World was loaded from storage
-    WorldLoaded {
-        world_id: String,
-        tick: Tick,
-    },
+    WorldLoaded { world_id: String, tick: Tick },
     /// World was saved
-    WorldSaved {
-        tick: Tick,
-    },
+    WorldSaved { tick: Tick },
 
     // ========================================================================
     // Simulation events
@@ -87,13 +88,9 @@ pub enum EventData {
         name: Option<String>,
     },
     /// Zone was loaded into active simulation
-    ZoneLoaded {
-        zone_id: ZoneId,
-    },
+    ZoneLoaded { zone_id: ZoneId },
     /// Zone was unloaded from active simulation
-    ZoneUnloaded {
-        zone_id: ZoneId,
-    },
+    ZoneUnloaded { zone_id: ZoneId },
 
     // ========================================================================
     // Entity events
@@ -176,4 +173,3 @@ impl Default for PropertyValue {
         PropertyValue::None
     }
 }
-

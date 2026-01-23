@@ -153,4 +153,3 @@ mod tests {
         assert_eq!(clock.current_tick(), Tick::ZERO);
     }
 }
-

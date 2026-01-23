@@ -70,7 +70,10 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
 
     /// Get the current tick.
     pub fn current_tick(&self) -> Tick {
-        self.world.as_ref().map(|w| w.current_tick).unwrap_or(Tick::ZERO)
+        self.world
+            .as_ref()
+            .map(|w| w.current_tick)
+            .unwrap_or(Tick::ZERO)
     }
 
     /// Get access to the RNG.
@@ -170,7 +173,8 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
         }
 
         // Step 1: Load snapshot
-        let snapshot = self.store
+        let snapshot = self
+            .store
             .load_snapshot(world_id)
             .map_err(|e| ApiError::StorageError(e.to_string()))?;
 
@@ -186,7 +190,8 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
         );
 
         // Step 2: Read events since last_event_id for crash recovery
-        let events_to_replay = self.event_log
+        let events_to_replay = self
+            .event_log
             .read_from_event_id(last_event_id)
             .map_err(|e| ApiError::StorageError(format!("Failed to read WAL: {}", e)))?;
 
@@ -195,8 +200,14 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
             info!(
                 "Replaying {} events for crash recovery (from event_id {} to {})",
                 events_to_replay.len(),
-                events_to_replay.first().map(|e| e.event_id.as_u64()).unwrap_or(0),
-                events_to_replay.last().map(|e| e.event_id.as_u64()).unwrap_or(0)
+                events_to_replay
+                    .first()
+                    .map(|e| e.event_id.as_u64())
+                    .unwrap_or(0),
+                events_to_replay
+                    .last()
+                    .map(|e| e.event_id.as_u64())
+                    .unwrap_or(0)
             );
 
             for event in &events_to_replay {
@@ -399,7 +410,7 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
                         if amt > 0 && self.rng.chance(0.01) {
                             // 1% chance per tick to lose 1 unit
                             let new_amount = amt.saturating_sub(1);
-                            
+
                             // Update entity
                             if let Some(entity) = world.entities.get_mut(&entity_id) {
                                 entity.properties.amount = Some(new_amount);
@@ -419,7 +430,7 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
                                 if let Some(entity) = world.entities.get_mut(&entity_id) {
                                     let old_state = entity.state;
                                     entity.state = EntityState::Dead;
-                                    
+
                                     self.pending_events.push(SimEvent::new(
                                         world.current_tick,
                                         EventData::EntityStateChanged {
@@ -439,11 +450,11 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
                         if hp > 0 && self.rng.chance(0.005) {
                             // 0.5% chance per tick
                             let new_health = hp.saturating_sub(1);
-                            
+
                             if let Some(entity) = world.entities.get_mut(&entity_id) {
                                 let old_health = hp;
                                 entity.properties.health = Some(new_health);
-                                
+
                                 self.pending_events.push(SimEvent::new(
                                     world.current_tick,
                                     EventData::EntityDegraded {
@@ -459,7 +470,7 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
                                 if let Some(entity) = world.entities.get_mut(&entity_id) {
                                     let old_state = entity.state;
                                     entity.state = EntityState::Dead;
-                                    
+
                                     self.pending_events.push(SimEvent::new(
                                         world.current_tick,
                                         EventData::EntityStateChanged {
@@ -509,7 +520,11 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
     // ========================================================================
 
     fn emit(&mut self, data: EventData) {
-        let tick = self.world.as_ref().map(|w| w.current_tick).unwrap_or(Tick::ZERO);
+        let tick = self
+            .world
+            .as_ref()
+            .map(|w| w.current_tick)
+            .unwrap_or(Tick::ZERO);
         self.pending_events.push(SimEvent::new(tick, data));
     }
 }
@@ -518,4 +533,3 @@ impl<R: IRng, C: ISimClock, E: IEventLog, S: IWorldStore> Simulation<R, C, E, S>
 mod tests {
     // Tests will use sy_testkit mocks
 }
-

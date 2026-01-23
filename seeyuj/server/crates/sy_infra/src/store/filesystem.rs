@@ -7,9 +7,9 @@
 //! - Snapshots use atomic write (tmp + fsync + rename)
 //! - Directory is synced after rename (POSIX)
 
-use std::fs::{self, File};
 #[cfg(unix)]
 use std::fs::OpenOptions;
+use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
@@ -18,7 +18,7 @@ use sy_types::{SimError, SimResult, WorldMeta};
 use tracing::{debug, info, warn};
 
 /// Filesystem-based world store.
-/// 
+///
 /// Directory structure:
 /// ```text
 /// {base_path}/
@@ -36,11 +36,12 @@ impl FilesystemStore {
     /// Create a new filesystem store at the given base path.
     pub fn new<P: AsRef<Path>>(base_path: P) -> SimResult<Self> {
         let base_path = base_path.as_ref().to_path_buf();
-        
+
         // Create base directories
         let worlds_dir = base_path.join("worlds");
-        fs::create_dir_all(&worlds_dir)
-            .map_err(|e| SimError::PersistenceError(format!("Failed to create worlds dir: {}", e)))?;
+        fs::create_dir_all(&worlds_dir).map_err(|e| {
+            SimError::PersistenceError(format!("Failed to create worlds dir: {}", e))
+        })?;
 
         info!("Initialized filesystem store at {:?}", base_path);
 
@@ -65,8 +66,9 @@ impl FilesystemStore {
     /// Ensure the world directory exists.
     fn ensure_world_dir(&self, world_id: &str) -> SimResult<()> {
         let dir = self.world_dir(world_id);
-        fs::create_dir_all(&dir)
-            .map_err(|e| SimError::PersistenceError(format!("Failed to create world dir: {}", e)))?;
+        fs::create_dir_all(&dir).map_err(|e| {
+            SimError::PersistenceError(format!("Failed to create world dir: {}", e))
+        })?;
         Ok(())
     }
 
@@ -88,20 +90,21 @@ impl IWorldStore for FilesystemStore {
 
     fn list_worlds(&self) -> SimResult<Vec<String>> {
         let worlds_dir = self.base_path.join("worlds");
-        
+
         if !worlds_dir.exists() {
             return Ok(Vec::new());
         }
 
         let mut worlds = Vec::new();
-        
+
         let entries = fs::read_dir(&worlds_dir)
             .map_err(|e| SimError::PersistenceError(format!("Failed to read worlds dir: {}", e)))?;
 
         for entry in entries {
-            let entry = entry
-                .map_err(|e| SimError::PersistenceError(format!("Failed to read dir entry: {}", e)))?;
-            
+            let entry = entry.map_err(|e| {
+                SimError::PersistenceError(format!("Failed to read dir entry: {}", e))
+            })?;
+
             if entry.file_type().map(|t| t.is_dir()).unwrap_or(false) {
                 if let Some(name) = entry.file_name().to_str() {
                     // Check if it has a meta.json
@@ -117,9 +120,12 @@ impl IWorldStore for FilesystemStore {
 
     fn load_meta(&self, world_id: &str) -> SimResult<WorldMeta> {
         let path = self.meta_path(world_id);
-        
+
         if !path.exists() {
-            return Err(SimError::PersistenceError(format!("World not found: {}", world_id)));
+            return Err(SimError::PersistenceError(format!(
+                "World not found: {}",
+                world_id
+            )));
         }
 
         let mut file = File::open(&path)
@@ -138,14 +144,15 @@ impl IWorldStore for FilesystemStore {
 
     fn save_meta(&mut self, meta: &WorldMeta) -> SimResult<()> {
         self.ensure_world_dir(&meta.world_id)?;
-        
+
         let path = self.meta_path(&meta.world_id);
-        
+
         let contents = serde_json::to_string_pretty(meta)
             .map_err(|e| SimError::PersistenceError(format!("Failed to serialize meta: {}", e)))?;
 
-        let mut file = File::create(&path)
-            .map_err(|e| SimError::PersistenceError(format!("Failed to create meta file: {}", e)))?;
+        let mut file = File::create(&path).map_err(|e| {
+            SimError::PersistenceError(format!("Failed to create meta file: {}", e))
+        })?;
 
         file.write_all(contents.as_bytes())
             .map_err(|e| SimError::PersistenceError(format!("Failed to write meta: {}", e)))?;
@@ -159,9 +166,12 @@ impl IWorldStore for FilesystemStore {
 
     fn load_snapshot(&self, world_id: &str) -> SimResult<WorldSnapshot> {
         let path = self.snapshot_path(world_id);
-        
+
         if !path.exists() {
-            return Err(SimError::PersistenceError(format!("Snapshot not found: {}", world_id)));
+            return Err(SimError::PersistenceError(format!(
+                "Snapshot not found: {}",
+                world_id
+            )));
         }
 
         let mut file = File::open(&path)
@@ -171,20 +181,25 @@ impl IWorldStore for FilesystemStore {
         file.read_to_end(&mut contents)
             .map_err(|e| SimError::PersistenceError(format!("Failed to read snapshot: {}", e)))?;
 
-        info!("Loaded snapshot for world {} ({} bytes)", world_id, contents.len());
+        info!(
+            "Loaded snapshot for world {} ({} bytes)",
+            world_id,
+            contents.len()
+        );
         Ok(contents)
     }
 
     fn save_snapshot(&mut self, world_id: &str, snapshot: &WorldSnapshot) -> SimResult<()> {
         self.ensure_world_dir(world_id)?;
-        
+
         let path = self.snapshot_path(world_id);
-        
+
         // Step 1: Write to temp file
         let temp_path = path.with_extension("json.tmp");
-        
-        let mut file = File::create(&temp_path)
-            .map_err(|e| SimError::PersistenceError(format!("Failed to create temp file: {}", e)))?;
+
+        let mut file = File::create(&temp_path).map_err(|e| {
+            SimError::PersistenceError(format!("Failed to create temp file: {}", e))
+        })?;
 
         file.write_all(snapshot)
             .map_err(|e| SimError::PersistenceError(format!("Failed to write snapshot: {}", e)))?;
@@ -206,16 +221,21 @@ impl IWorldStore for FilesystemStore {
             }
         }
 
-        info!("Saved snapshot for world {} ({} bytes)", world_id, snapshot.len());
+        info!(
+            "Saved snapshot for world {} ({} bytes)",
+            world_id,
+            snapshot.len()
+        );
         Ok(())
     }
 
     fn delete_world(&mut self, world_id: &str) -> SimResult<()> {
         let dir = self.world_dir(world_id);
-        
+
         if dir.exists() {
-            fs::remove_dir_all(&dir)
-                .map_err(|e| SimError::PersistenceError(format!("Failed to delete world: {}", e)))?;
+            fs::remove_dir_all(&dir).map_err(|e| {
+                SimError::PersistenceError(format!("Failed to delete world: {}", e))
+            })?;
             info!("Deleted world {}", world_id);
         } else {
             warn!("World {} not found for deletion", world_id);
@@ -232,8 +252,8 @@ impl IWorldStore for FilesystemStore {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sy_types::{EventId, RngSeed, SimTime, Tick};
     use std::env::temp_dir;
+    use sy_types::{EventId, RngSeed, SimTime, Tick};
 
     fn temp_store() -> FilesystemStore {
         let path = temp_dir().join(format!("seeyuj_test_{}", std::process::id()));
@@ -249,7 +269,7 @@ mod tests {
     #[test]
     fn save_load_meta() {
         let mut store = temp_store();
-        
+
         let meta = WorldMeta {
             world_id: "test_world".to_string(),
             name: "Test World".to_string(),
@@ -275,7 +295,7 @@ mod tests {
     #[test]
     fn save_load_snapshot() {
         let mut store = temp_store();
-        
+
         // First save meta
         let meta = WorldMeta {
             world_id: "snapshot_test".to_string(),

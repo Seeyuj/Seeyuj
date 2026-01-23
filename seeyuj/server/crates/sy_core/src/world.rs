@@ -17,8 +17,7 @@ use std::collections::BTreeMap;
 
 use sy_api::commands::EntityProperties;
 use sy_types::{
-    EntityId, EntityKind, EntityState, EventId, RngSeed, SimTime, Tick, WorldMeta, WorldPos,
-    ZoneId,
+    EntityId, EntityKind, EntityState, EventId, RngSeed, SimTime, Tick, WorldMeta, WorldPos, ZoneId,
 };
 
 // ============================================================================
@@ -150,9 +149,9 @@ impl World {
             seed,
             current_tick: Tick::ZERO,
             sim_time: SimTime::ZERO,
-            created_tick: Tick::ZERO,       // World created at tick 0
-            snapshot_tick: Tick::ZERO,      // Will be updated on save
-            last_event_id: EventId::ZERO,   // No events yet
+            created_tick: Tick::ZERO,     // World created at tick 0
+            snapshot_tick: Tick::ZERO,    // Will be updated on save
+            last_event_id: EventId::ZERO, // No events yet
             format_version: WorldMeta::CURRENT_FORMAT_VERSION,
         };
 
@@ -167,7 +166,10 @@ impl World {
         };
 
         // Create the origin zone by default
-        world.zones.insert(ZoneId::ORIGIN, Zone::new(ZoneId::ORIGIN, Some("Origin".to_string())));
+        world.zones.insert(
+            ZoneId::ORIGIN,
+            Zone::new(ZoneId::ORIGIN, Some("Origin".to_string())),
+        );
 
         world
     }
@@ -317,7 +319,9 @@ fn bincode_serialize<T: Serialize>(value: &T) -> Result<Vec<u8>, serde::de::valu
     serde_json::to_vec(value).map_err(|_| serde::de::Error::custom("serialization failed"))
 }
 
-fn bincode_deserialize<'a, T: Deserialize<'a>>(data: &'a [u8]) -> Result<T, serde::de::value::Error> {
+fn bincode_deserialize<'a, T: Deserialize<'a>>(
+    data: &'a [u8],
+) -> Result<T, serde::de::value::Error> {
     serde_json::from_slice(data).map_err(|_| serde::de::Error::custom("deserialization failed"))
 }
 
@@ -362,4 +366,3 @@ mod tests {
         assert_eq!(restored.seed().as_u64(), world.seed().as_u64());
     }
 }
-

@@ -38,7 +38,8 @@ impl Pcg32Rng {
 
     /// Advance the internal state
     fn advance(&mut self) {
-        self.state = self.state
+        self.state = self
+            .state
             .wrapping_mul(Self::MULTIPLIER)
             .wrapping_add(self.increment);
     }
@@ -131,4 +132,3 @@ mod tests {
         }
     }
 }
-

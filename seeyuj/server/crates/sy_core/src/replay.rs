@@ -109,13 +109,7 @@ pub fn apply_event(world: &mut World, event: &SimEvent) -> Result<(), String> {
                 world.next_entity_id = entity_id.as_u64() + 1;
             }
 
-            let entity = Entity::new(
-                *entity_id,
-                *kind,
-                *position,
-                event.tick,
-                properties.clone(),
-            );
+            let entity = Entity::new(*entity_id, *kind, *position, event.tick, properties.clone());
             world.add_entity(entity);
             Ok(())
         }
@@ -125,7 +119,11 @@ pub fn apply_event(world: &mut World, event: &SimEvent) -> Result<(), String> {
             Ok(())
         }
 
-        EventData::EntityMoved { entity_id, from, to } => {
+        EventData::EntityMoved {
+            entity_id,
+            from,
+            to,
+        } => {
             if let Some(entity) = world.entities.get_mut(entity_id) {
                 // Update zone membership
                 if from.zone != to.zone {

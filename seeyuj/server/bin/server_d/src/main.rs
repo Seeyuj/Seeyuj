@@ -84,9 +84,9 @@ fn main() {
     let cli = Cli::parse();
 
     // Initialize logging
-    let filter = EnvFilter::try_from_default_env()
-        .unwrap_or_else(|_| EnvFilter::new(&cli.log_level));
-    
+    let filter =
+        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(&cli.log_level));
+
     tracing_subscriber::fmt()
         .with_env_filter(filter)
         .with_target(false)
@@ -98,7 +98,7 @@ fn main() {
     // Setup shutdown signal handler
     let running = Arc::new(AtomicBool::new(true));
     let r = running.clone();
-    
+
     ctrlc_handler(move || {
         warn!("Shutdown signal received");
         r.store(false, Ordering::SeqCst);
@@ -106,15 +106,18 @@ fn main() {
 
     // Execute command
     let result = match cli.command {
-        Commands::Create { name, seed, resources, creatures } => {
-            cmd_create(&cli.data_dir, &name, seed, resources, creatures)
-        }
-        Commands::Run { world, ticks, save_interval } => {
-            cmd_run(&cli.data_dir, &world, ticks, save_interval, running)
-        }
-        Commands::List => {
-            cmd_list(&cli.data_dir)
-        }
+        Commands::Create {
+            name,
+            seed,
+            resources,
+            creatures,
+        } => cmd_create(&cli.data_dir, &name, seed, resources, creatures),
+        Commands::Run {
+            world,
+            ticks,
+            save_interval,
+        } => cmd_run(&cli.data_dir, &world, ticks, save_interval, running),
+        Commands::List => cmd_list(&cli.data_dir),
     };
 
     if let Err(e) = result {
@@ -163,7 +166,7 @@ fn cmd_create(
     for i in 0..resources {
         let x = (i as i32 % 10) * 10;
         let y = (i as i32 / 10) * 10;
-        
+
         sim.process_command(Command::SpawnEntity(SpawnEntityCmd {
             position: WorldPos::new(ZoneId::ORIGIN, Position::new(x, y, 0)),
             kind: EntityKind::Resource,
@@ -179,7 +182,7 @@ fn cmd_create(
     for i in 0..creatures {
         let x = (i as i32 % 10) * 10 + 5;
         let y = (i as i32 / 10) * 10 + 5;
-        
+
         sim.process_command(Command::SpawnEntity(SpawnEntityCmd {
             position: WorldPos::new(ZoneId::ORIGIN, Position::new(x, y, 0)),
             kind: EntityKind::Creature,
@@ -230,7 +233,7 @@ fn cmd_run(
 
     // Main simulation loop
     info!("Starting simulation loop...");
-    
+
     while running.load(Ordering::SeqCst) {
         // Check tick limit
         if max_ticks > 0 && ticks_run >= max_ticks {
@@ -282,8 +285,8 @@ fn cmd_run(
 
 /// List available worlds
 fn cmd_list(data_dir: &PathBuf) -> Result<(), String> {
-    let store = FilesystemStore::new(data_dir)
-        .map_err(|e| format!("Failed to open store: {}", e))?;
+    let store =
+        FilesystemStore::new(data_dir).map_err(|e| format!("Failed to open store: {}", e))?;
 
     let worlds = store
         .list_worlds()
@@ -297,7 +300,10 @@ fn cmd_list(data_dir: &PathBuf) -> Result<(), String> {
             if let Ok(meta) = store.load_meta(&world_id) {
                 println!(
                     "  {} - '{}' (tick {}, seed {})",
-                    world_id, meta.name, meta.current_tick, meta.seed.as_u64()
+                    world_id,
+                    meta.name,
+                    meta.current_tick,
+                    meta.seed.as_u64()
                 );
             } else {
                 println!("  {} (metadata unavailable)", world_id);
@@ -313,16 +319,15 @@ fn create_simulation(
     data_dir: &PathBuf,
     world_id: &str,
 ) -> Result<Simulation<Pcg32Rng, UnlimitedClock, FileEventLog, FilesystemStore>, String> {
-    let store = FilesystemStore::new(data_dir)
-        .map_err(|e| format!("Failed to create store: {}", e))?;
+    let store =
+        FilesystemStore::new(data_dir).map_err(|e| format!("Failed to create store: {}", e))?;
 
     let events_dir = store.events_dir(world_id);
-    let event_log = FileEventLog::new(&events_dir)
-        .map_err(|e| format!("Failed to create event log: {}", e))?;
+    let event_log =
+        FileEventLog::new(&events_dir).map_err(|e| format!("Failed to create event log: {}", e))?;
 
     let rng = Pcg32Rng::new(RngSeed::new(0)); // Will be set from world seed
     let clock = UnlimitedClock::new();
 
     Ok(Simulation::new(rng, clock, event_log, store))
 }
-

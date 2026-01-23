@@ -111,4 +111,3 @@ mod tests {
         assert_eq!(world.entity_count(), 2);
     }
 }
-

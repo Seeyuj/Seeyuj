@@ -9,8 +9,10 @@
 use std::collections::HashMap;
 
 use sy_api::events::SimEvent;
-use sy_core::ports::{IEventLog, IRng, ISimClock, IStateHasher, IWorldStore, StateHash, WorldSnapshot};
-use sy_types::{EventId, RngSeed, SimResult, SimTime, Tick, WorldMeta, SimError};
+use sy_core::ports::{
+    IEventLog, IRng, ISimClock, IStateHasher, IWorldStore, StateHash, WorldSnapshot,
+};
+use sy_types::{EventId, RngSeed, SimError, SimResult, SimTime, Tick, WorldMeta};
 
 // ============================================================================
 // MockRng
@@ -145,7 +147,12 @@ impl IEventLog for MockEventLog {
     }
 
     fn read_from_event_id(&self, from_id: EventId) -> SimResult<Vec<SimEvent>> {
-        Ok(self.events.iter().filter(|e| e.event_id > from_id).cloned().collect())
+        Ok(self
+            .events
+            .iter()
+            .filter(|e| e.event_id > from_id)
+            .cloned()
+            .collect())
     }
 
     fn read_all_valid(&self) -> SimResult<Vec<SimEvent>> {
@@ -237,7 +244,8 @@ impl IWorldStore for MockWorldStore {
     }
 
     fn save_snapshot(&mut self, world_id: &str, snapshot: &WorldSnapshot) -> SimResult<()> {
-        self.snapshots.insert(world_id.to_string(), snapshot.clone());
+        self.snapshots
+            .insert(world_id.to_string(), snapshot.clone());
         Ok(())
     }
 
@@ -281,7 +289,10 @@ impl IStateHasher for MockHasher {
     fn update(&mut self, data: &[u8]) {
         // Simple FNV-like hash for testing
         for &byte in data {
-            self.hash = self.hash.wrapping_mul(1099511628211).wrapping_add(byte as u64);
+            self.hash = self
+                .hash
+                .wrapping_mul(1099511628211)
+                .wrapping_add(byte as u64);
         }
     }
 
@@ -317,11 +328,14 @@ mod tests {
         use sy_api::events::EventData;
 
         let mut log = MockEventLog::new();
-        let event = SimEvent::new(Tick(1), EventData::TickProcessed {
-            tick: Tick(1),
-            sim_time: SimTime::ZERO,
-            entities_processed: 0,
-        });
+        let event = SimEvent::new(
+            Tick(1),
+            EventData::TickProcessed {
+                tick: Tick(1),
+                sim_time: SimTime::ZERO,
+                entities_processed: 0,
+            },
+        );
 
         let persisted = log.append(event).unwrap();
         assert_eq!(persisted.event_id, EventId::new(1));
@@ -334,13 +348,16 @@ mod tests {
         use sy_api::events::EventData;
 
         let mut log = MockEventLog::new();
-        
+
         for i in 1..=5 {
-            let event = SimEvent::new(Tick(i), EventData::TickProcessed {
-                tick: Tick(i),
-                sim_time: SimTime { units: i },
-                entities_processed: 0,
-            });
+            let event = SimEvent::new(
+                Tick(i),
+                EventData::TickProcessed {
+                    tick: Tick(i),
+                    sim_time: SimTime { units: i },
+                    entities_processed: 0,
+                },
+            );
             log.append(event).unwrap();
         }
 
@@ -349,4 +366,3 @@ mod tests {
         assert_eq!(events[0].event_id, EventId::new(4));
     }
 }
-

@@ -57,11 +57,12 @@ impl FileEventLog {
     /// Create or open a WAL file at the given path.
     pub fn new<P: AsRef<Path>>(path: P) -> SimResult<Self> {
         let path = path.as_ref().to_path_buf();
-        
+
         // Ensure parent directory exists
         if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)
-                .map_err(|e| SimError::PersistenceError(format!("Failed to create WAL dir: {}", e)))?;
+            fs::create_dir_all(parent).map_err(|e| {
+                SimError::PersistenceError(format!("Failed to create WAL dir: {}", e))
+            })?;
         }
 
         let mut log = FileEventLog {
@@ -79,7 +80,7 @@ impl FileEventLog {
             "Initialized WAL with {} events, next_event_id={}",
             log.total_events, log.next_event_id
         );
-        
+
         Ok(log)
     }
 
@@ -92,8 +93,9 @@ impl FileEventLog {
 
         let file = File::open(&self.path)
             .map_err(|e| SimError::PersistenceError(format!("Failed to open WAL: {}", e)))?;
-        
-        let file_len = file.metadata()
+
+        let file_len = file
+            .metadata()
             .map_err(|e| SimError::PersistenceError(format!("Failed to get WAL metadata: {}", e)))?
             .len();
 
@@ -107,8 +109,9 @@ impl FileEventLog {
                     self.next_event_id = event.event_id.as_u64() + 1;
                     self.last_tick = Some(event.tick);
                     self.total_events += 1;
-                    last_valid_offset = reader.stream_position()
-                        .map_err(|e| SimError::PersistenceError(format!("Stream position error: {}", e)))?;
+                    last_valid_offset = reader.stream_position().map_err(|e| {
+                        SimError::PersistenceError(format!("Stream position error: {}", e))
+                    })?;
                     offset = last_valid_offset;
                 }
                 Err(e) => {
@@ -127,9 +130,12 @@ impl FileEventLog {
             let file = OpenOptions::new()
                 .write(true)
                 .open(&self.path)
-                .map_err(|e| SimError::PersistenceError(format!("Failed to open WAL for truncate: {}", e)))?;
-            file.set_len(last_valid_offset)
-                .map_err(|e| SimError::PersistenceError(format!("Failed to truncate WAL: {}", e)))?;
+                .map_err(|e| {
+                    SimError::PersistenceError(format!("Failed to open WAL for truncate: {}", e))
+                })?;
+            file.set_len(last_valid_offset).map_err(|e| {
+                SimError::PersistenceError(format!("Failed to truncate WAL: {}", e))
+            })?;
         }
 
         debug!(
@@ -144,13 +150,15 @@ impl FileEventLog {
 
     /// Read a single record at the given offset.
     fn read_record_at(&self, reader: &mut BufReader<File>, offset: u64) -> SimResult<SimEvent> {
-        reader.seek(SeekFrom::Start(offset))
+        reader
+            .seek(SeekFrom::Start(offset))
             .map_err(|e| SimError::PersistenceError(format!("Seek failed: {}", e)))?;
 
         // Read header
-        let magic = reader.read_u32::<LittleEndian>()
+        let magic = reader
+            .read_u32::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read magic failed: {}", e)))?;
-        
+
         if magic != WAL_MAGIC {
             return Err(SimError::CorruptedState(format!(
                 "Invalid magic: expected {:08x}, got {:08x}",
@@ -158,9 +166,10 @@ impl FileEventLog {
             )));
         }
 
-        let version = reader.read_u16::<LittleEndian>()
+        let version = reader
+            .read_u16::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read version failed: {}", e)))?;
-        
+
         if version != WAL_VERSION {
             return Err(SimError::CorruptedState(format!(
                 "Unsupported WAL version: {}",
@@ -168,26 +177,31 @@ impl FileEventLog {
             )));
         }
 
-        let payload_len = reader.read_u32::<LittleEndian>()
+        let payload_len = reader
+            .read_u32::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read length failed: {}", e)))?;
 
-        let event_id = reader.read_u64::<LittleEndian>()
+        let event_id = reader
+            .read_u64::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read event_id failed: {}", e)))?;
 
-        let tick = reader.read_u64::<LittleEndian>()
+        let tick = reader
+            .read_u64::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read tick failed: {}", e)))?;
 
         // Read payload
         let mut payload = vec![0u8; payload_len as usize];
-        reader.read_exact(&mut payload)
+        reader
+            .read_exact(&mut payload)
             .map_err(|e| SimError::PersistenceError(format!("Read payload failed: {}", e)))?;
 
         // Read and verify CRC
-        let stored_crc = reader.read_u32::<LittleEndian>()
+        let stored_crc = reader
+            .read_u32::<LittleEndian>()
             .map_err(|e| SimError::PersistenceError(format!("Read CRC failed: {}", e)))?;
 
         let computed_crc = self.compute_crc(version, payload_len, event_id, tick, &payload);
-        
+
         if stored_crc != computed_crc {
             return Err(SimError::CorruptedState(format!(
                 "CRC mismatch: stored={:08x}, computed={:08x}",
@@ -203,7 +217,14 @@ impl FileEventLog {
     }
 
     /// Compute CRC32 over record contents (excluding CRC field itself).
-    fn compute_crc(&self, version: u16, length: u32, event_id: u64, tick: u64, payload: &[u8]) -> u32 {
+    fn compute_crc(
+        &self,
+        version: u16,
+        length: u32,
+        event_id: u64,
+        tick: u64,
+        payload: &[u8],
+    ) -> u32 {
         let mut hasher = Hasher::new();
         hasher.update(&WAL_MAGIC.to_le_bytes());
         hasher.update(&version.to_le_bytes());
@@ -244,25 +265,35 @@ impl FileEventLog {
         let writer = self.writer.as_mut().unwrap();
 
         // Write record
-        writer.write_u32::<LittleEndian>(WAL_MAGIC)
+        writer
+            .write_u32::<LittleEndian>(WAL_MAGIC)
             .map_err(|e| SimError::PersistenceError(format!("Write magic failed: {}", e)))?;
-        writer.write_u16::<LittleEndian>(WAL_VERSION)
+        writer
+            .write_u16::<LittleEndian>(WAL_VERSION)
             .map_err(|e| SimError::PersistenceError(format!("Write version failed: {}", e)))?;
-        writer.write_u32::<LittleEndian>(payload_len)
+        writer
+            .write_u32::<LittleEndian>(payload_len)
             .map_err(|e| SimError::PersistenceError(format!("Write length failed: {}", e)))?;
-        writer.write_u64::<LittleEndian>(event_id)
+        writer
+            .write_u64::<LittleEndian>(event_id)
             .map_err(|e| SimError::PersistenceError(format!("Write event_id failed: {}", e)))?;
-        writer.write_u64::<LittleEndian>(tick)
+        writer
+            .write_u64::<LittleEndian>(tick)
             .map_err(|e| SimError::PersistenceError(format!("Write tick failed: {}", e)))?;
-        writer.write_all(&payload)
+        writer
+            .write_all(&payload)
             .map_err(|e| SimError::PersistenceError(format!("Write payload failed: {}", e)))?;
-        writer.write_u32::<LittleEndian>(crc)
+        writer
+            .write_u32::<LittleEndian>(crc)
             .map_err(|e| SimError::PersistenceError(format!("Write CRC failed: {}", e)))?;
 
         // Flush and sync
-        writer.flush()
+        writer
+            .flush()
             .map_err(|e| SimError::PersistenceError(format!("Flush failed: {}", e)))?;
-        writer.get_ref().sync_all()
+        writer
+            .get_ref()
+            .sync_all()
             .map_err(|e| SimError::PersistenceError(format!("Sync failed: {}", e)))?;
 
         self.last_tick = Some(event.tick);
@@ -279,8 +310,9 @@ impl FileEventLog {
 
         let file = File::open(&self.path)
             .map_err(|e| SimError::PersistenceError(format!("Failed to open WAL: {}", e)))?;
-        
-        let file_len = file.metadata()
+
+        let file_len = file
+            .metadata()
             .map_err(|e| SimError::PersistenceError(format!("Failed to get WAL metadata: {}", e)))?
             .len();
 
@@ -291,8 +323,9 @@ impl FileEventLog {
         while offset < file_len {
             match self.read_record_at(&mut reader, offset) {
                 Ok(event) => {
-                    offset = reader.stream_position()
-                        .map_err(|e| SimError::PersistenceError(format!("Stream position error: {}", e)))?;
+                    offset = reader.stream_position().map_err(|e| {
+                        SimError::PersistenceError(format!("Stream position error: {}", e))
+                    })?;
                     events.push(event);
                 }
                 Err(_) => break, // Stop at first invalid record
@@ -344,7 +377,8 @@ impl IEventLog for FileEventLog {
         self.writer = None;
 
         // Read events up to event_id
-        let events_to_keep: Vec<_> = self.read_all_events()?
+        let events_to_keep: Vec<_> = self
+            .read_all_events()?
             .into_iter()
             .filter(|e| e.event_id <= event_id)
             .collect();
@@ -373,9 +407,12 @@ impl IEventLog for FileEventLog {
 
     fn sync(&mut self) -> SimResult<()> {
         if let Some(writer) = &mut self.writer {
-            writer.flush()
+            writer
+                .flush()
                 .map_err(|e| SimError::PersistenceError(format!("Flush failed: {}", e)))?;
-            writer.get_ref().sync_all()
+            writer
+                .get_ref()
+                .sync_all()
                 .map_err(|e| SimError::PersistenceError(format!("Sync failed: {}", e)))?;
         }
         Ok(())
@@ -389,10 +426,10 @@ impl IEventLog for FileEventLog {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sy_api::events::EventData;
-    use sy_types::RngSeed;
     use std::env::temp_dir;
     use std::sync::atomic::{AtomicU64, Ordering};
+    use sy_api::events::EventData;
+    use sy_types::RngSeed;
 
     static TEST_COUNTER: AtomicU64 = AtomicU64::new(0);
 

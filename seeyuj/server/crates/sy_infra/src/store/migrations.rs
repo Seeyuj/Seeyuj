@@ -28,4 +28,3 @@ pub fn migrate_meta(meta: &mut WorldMeta) -> bool {
     meta.format_version = WorldMeta::CURRENT_FORMAT_VERSION;
     true
 }
-

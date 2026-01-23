@@ -54,4 +54,3 @@ pub trait IEventLog: Send {
         self.len() == 0
     }
 }
-

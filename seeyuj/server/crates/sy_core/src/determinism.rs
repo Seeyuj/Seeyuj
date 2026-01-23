@@ -91,7 +91,8 @@ pub fn compute_canonical_hash(world: &World, hasher: &mut dyn IStateHasher) -> S
     let mut buf = Vec::with_capacity(1024);
 
     // 1. Tick
-    buf.write_u64::<LittleEndian>(world.current_tick.as_u64()).unwrap();
+    buf.write_u64::<LittleEndian>(world.current_tick.as_u64())
+        .unwrap();
 
     // 2. SimTime
     buf.write_u64::<LittleEndian>(world.sim_time.units).unwrap();
@@ -103,7 +104,8 @@ pub fn compute_canonical_hash(world: &World, hasher: &mut dyn IStateHasher) -> S
     buf.write_u64::<LittleEndian>(world.next_entity_id).unwrap();
 
     // 5. Number of entities
-    buf.write_u64::<LittleEndian>(world.entities.len() as u64).unwrap();
+    buf.write_u64::<LittleEndian>(world.entities.len() as u64)
+        .unwrap();
 
     // 6. Entities (BTreeMap guarantees sorted order by EntityId)
     for (id, entity) in &world.entities {
@@ -128,13 +130,18 @@ pub fn compute_canonical_hash(world: &World, hasher: &mut dyn IStateHasher) -> S
         buf.push(state_byte);
 
         // Position
-        buf.write_u32::<LittleEndian>(entity.position.zone.as_u32()).unwrap();
-        buf.write_i32::<LittleEndian>(entity.position.pos.x).unwrap();
-        buf.write_i32::<LittleEndian>(entity.position.pos.y).unwrap();
-        buf.write_i32::<LittleEndian>(entity.position.pos.z).unwrap();
+        buf.write_u32::<LittleEndian>(entity.position.zone.as_u32())
+            .unwrap();
+        buf.write_i32::<LittleEndian>(entity.position.pos.x)
+            .unwrap();
+        buf.write_i32::<LittleEndian>(entity.position.pos.y)
+            .unwrap();
+        buf.write_i32::<LittleEndian>(entity.position.pos.z)
+            .unwrap();
 
         // Created at
-        buf.write_u64::<LittleEndian>(entity.created_at.as_u64()).unwrap();
+        buf.write_u64::<LittleEndian>(entity.created_at.as_u64())
+            .unwrap();
 
         // Properties
         if let Some(ref name) = entity.properties.name {
@@ -143,18 +150,22 @@ pub fn compute_canonical_hash(world: &World, hasher: &mut dyn IStateHasher) -> S
         } else {
             buf.write_u32::<LittleEndian>(0).unwrap();
         }
-        buf.write_u32::<LittleEndian>(entity.properties.amount.unwrap_or(0)).unwrap();
-        buf.write_u32::<LittleEndian>(entity.properties.health.unwrap_or(0)).unwrap();
+        buf.write_u32::<LittleEndian>(entity.properties.amount.unwrap_or(0))
+            .unwrap();
+        buf.write_u32::<LittleEndian>(entity.properties.health.unwrap_or(0))
+            .unwrap();
     }
 
     // 7. Number of zones
-    buf.write_u64::<LittleEndian>(world.zones.len() as u64).unwrap();
+    buf.write_u64::<LittleEndian>(world.zones.len() as u64)
+        .unwrap();
 
     // 8. Zones (BTreeMap guarantees sorted order by ZoneId)
     for (id, zone) in &world.zones {
         buf.write_u32::<LittleEndian>(id.as_u32()).unwrap();
         buf.push(if zone.loaded { 1u8 } else { 0u8 });
-        buf.write_u64::<LittleEndian>(zone.entities.len() as u64).unwrap();
+        buf.write_u64::<LittleEndian>(zone.entities.len() as u64)
+            .unwrap();
     }
 
     hasher.update(&buf);
@@ -240,7 +251,8 @@ where
         name: config.world_name.clone(),
         seed: config.seed,
     });
-    sim.process_command(create_cmd).expect("Failed to create world");
+    sim.process_command(create_cmd)
+        .expect("Failed to create world");
 
     // Sort inputs by tick (defensive)
     let mut inputs = config.inputs.clone();
@@ -260,12 +272,11 @@ where
         }
 
         // Execute tick
-        sim.process_command(Command::Tick)
-            .expect("Tick failed");
+        sim.process_command(Command::Tick).expect("Tick failed");
 
         // Checkpoint?
-        let should_checkpoint = config.checkpoint_every > 0
-            && (tick_num + 1) % config.checkpoint_every == 0;
+        let should_checkpoint =
+            config.checkpoint_every > 0 && (tick_num + 1) % config.checkpoint_every == 0;
 
         if should_checkpoint || tick_num + 1 == config.total_ticks {
             if let Some(world) = sim.world() {
@@ -311,11 +322,13 @@ pub fn verify_determinism(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sy_api::commands::{EntityProperties, SpawnEntityCmd};
-    use sy_api::events::SimEvent;
-    use sy_types::{EntityKind, EventId, Position, SimError, SimResult, SimTime, WorldMeta, WorldPos, ZoneId};
     use crate::ports::{IEventLog, IRng, ISimClock, IWorldStore};
     use std::collections::HashMap;
+    use sy_api::commands::{EntityProperties, SpawnEntityCmd};
+    use sy_api::events::SimEvent;
+    use sy_types::{
+        EntityKind, EventId, Position, SimError, SimResult, SimTime, WorldMeta, WorldPos, ZoneId,
+    };
 
     struct TestRng {
         seed: RngSeed,
@@ -508,7 +521,8 @@ mod tests {
         }
 
         fn save_snapshot(&mut self, world_id: &str, snapshot: &Vec<u8>) -> SimResult<()> {
-            self.snapshots.insert(world_id.to_string(), snapshot.clone());
+            self.snapshots
+                .insert(world_id.to_string(), snapshot.clone());
             Ok(())
         }
 
@@ -607,8 +621,7 @@ mod tests {
         }
 
         // Use the helper function too
-        verify_determinism(&result_a, &result_b)
-            .expect("Determinism verification failed");
+        verify_determinism(&result_a, &result_b).expect("Determinism verification failed");
     }
 
     #[test]

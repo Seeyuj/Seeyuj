@@ -33,4 +33,3 @@ pub trait ISimClock: Send {
     /// Default implementation does nothing (runs as fast as possible).
     fn wait_for_next_tick(&self) {}
 }
-

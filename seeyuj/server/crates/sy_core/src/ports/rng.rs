@@ -72,4 +72,3 @@ pub trait IRng: Send {
         }
     }
 }
-

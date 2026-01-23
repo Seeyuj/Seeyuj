@@ -12,11 +12,11 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
+use sy_core::ports::IEventLog;
 use sy_core::ports::IWorldStore;
 use sy_core::World;
 use sy_infra::{FileEventLog, FilesystemStore};
 use sy_types::EntityId;
-use sy_core::ports::IEventLog;
 
 /// See-Yuj CLI - World inspection and administration
 #[derive(Parser)]
@@ -98,8 +98,16 @@ fn main() {
 
     let result = match cli.command {
         Commands::Status { world } => cmd_status(&cli.data_dir, &world),
-        Commands::Dump { world, output, pretty } => cmd_dump(&cli.data_dir, &world, output, pretty),
-        Commands::Events { world, count, from_tick } => cmd_events(&cli.data_dir, &world, count, from_tick),
+        Commands::Dump {
+            world,
+            output,
+            pretty,
+        } => cmd_dump(&cli.data_dir, &world, output, pretty),
+        Commands::Events {
+            world,
+            count,
+            from_tick,
+        } => cmd_events(&cli.data_dir, &world, count, from_tick),
         Commands::Entity { world, entity_id } => cmd_entity(&cli.data_dir, &world, entity_id),
         Commands::Entities { world, kind } => cmd_entities(&cli.data_dir, &world, kind),
         Commands::Zones { world } => cmd_zones(&cli.data_dir, &world),
@@ -113,8 +121,8 @@ fn main() {
 
 /// Load world from storage
 fn load_world(data_dir: &PathBuf, world_id: &str) -> Result<World, String> {
-    let store = FilesystemStore::new(data_dir)
-        .map_err(|e| format!("Failed to open store: {}", e))?;
+    let store =
+        FilesystemStore::new(data_dir).map_err(|e| format!("Failed to open store: {}", e))?;
 
     if !store.exists(world_id) {
         return Err(format!("World not found: {}", world_id));
@@ -124,14 +132,13 @@ fn load_world(data_dir: &PathBuf, world_id: &str) -> Result<World, String> {
         .load_snapshot(world_id)
         .map_err(|e| format!("Failed to load snapshot: {}", e))?;
 
-    World::from_bytes(&snapshot)
-        .map_err(|e| format!("Failed to deserialize world: {}", e))
+    World::from_bytes(&snapshot).map_err(|e| format!("Failed to deserialize world: {}", e))
 }
 
 /// Show world status
 fn cmd_status(data_dir: &PathBuf, world_id: &str) -> Result<(), String> {
-    let store = FilesystemStore::new(data_dir)
-        .map_err(|e| format!("Failed to open store: {}", e))?;
+    let store =
+        FilesystemStore::new(data_dir).map_err(|e| format!("Failed to open store: {}", e))?;
 
     let meta = store
         .load_meta(world_id)
@@ -210,8 +217,7 @@ fn cmd_dump(
     .map_err(|e| format!("Failed to serialize: {}", e))?;
 
     if let Some(path) = output {
-        std::fs::write(&path, &json)
-            .map_err(|e| format!("Failed to write file: {}", e))?;
+        std::fs::write(&path, &json).map_err(|e| format!("Failed to write file: {}", e))?;
         println!("World dumped to {:?}", path);
     } else {
         println!("{}", json);
@@ -227,12 +233,12 @@ fn cmd_events(
     count: usize,
     from_tick: Option<u64>,
 ) -> Result<(), String> {
-    let store = FilesystemStore::new(data_dir)
-        .map_err(|e| format!("Failed to open store: {}", e))?;
+    let store =
+        FilesystemStore::new(data_dir).map_err(|e| format!("Failed to open store: {}", e))?;
 
     let events_dir = store.events_dir(world_id);
-    let event_log = FileEventLog::new(&events_dir)
-        .map_err(|e| format!("Failed to open event log: {}", e))?;
+    let event_log =
+        FileEventLog::new(&events_dir).map_err(|e| format!("Failed to open event log: {}", e))?;
 
     let events = event_log
         .read_all_valid()
@@ -240,7 +246,10 @@ fn cmd_events(
 
     // Filter by tick if specified
     let filtered: Vec<_> = if let Some(tick) = from_tick {
-        events.into_iter().filter(|e| e.tick.as_u64() >= tick).collect()
+        events
+            .into_iter()
+            .filter(|e| e.tick.as_u64() >= tick)
+            .collect()
     } else {
         events
     };
@@ -248,8 +257,12 @@ fn cmd_events(
     let total = filtered.len();
     let display_events: Vec<_> = filtered.into_iter().rev().take(count).collect();
 
-    println!("=== Events (showing {} of {}) ===", display_events.len(), total);
-    
+    println!(
+        "=== Events (showing {} of {}) ===",
+        display_events.len(),
+        total
+    );
+
     for event in display_events.iter().rev() {
         println!("[{} | {}] {:?}", event.event_id, event.tick, event.data);
     }
@@ -287,18 +300,25 @@ fn cmd_entity(data_dir: &PathBuf, world_id: &str, entity_id: u64) -> Result<(), 
 }
 
 /// List all entities
-fn cmd_entities(data_dir: &PathBuf, world_id: &str, kind_filter: Option<String>) -> Result<(), String> {
+fn cmd_entities(
+    data_dir: &PathBuf,
+    world_id: &str,
+    kind_filter: Option<String>,
+) -> Result<(), String> {
     let world = load_world(data_dir, world_id)?;
 
     let kind_filter = kind_filter.map(|s| s.to_lowercase());
 
     println!("=== Entities ===");
-    println!("{:>8} | {:>10} | {:>8} | {:>20} | {:>10}", "ID", "Kind", "State", "Position", "Name");
+    println!(
+        "{:>8} | {:>10} | {:>8} | {:>20} | {:>10}",
+        "ID", "Kind", "State", "Position", "Name"
+    );
     println!("{}", "-".repeat(70));
 
     for entity in world.entities.values() {
         let kind_str = format!("{}", entity.kind).to_lowercase();
-        
+
         if let Some(ref filter) = kind_filter {
             if !kind_str.contains(filter) {
                 continue;
@@ -324,7 +344,10 @@ fn cmd_zones(data_dir: &PathBuf, world_id: &str) -> Result<(), String> {
     let world = load_world(data_dir, world_id)?;
 
     println!("=== Zones ===");
-    println!("{:>8} | {:>20} | {:>8} | {:>10}", "ID", "Name", "Loaded", "Entities");
+    println!(
+        "{:>8} | {:>20} | {:>8} | {:>10}",
+        "ID", "Name", "Loaded", "Entities"
+    );
     println!("{}", "-".repeat(55));
 
     for zone in world.zones.values() {
@@ -340,4 +363,3 @@ fn cmd_zones(data_dir: &PathBuf, world_id: &str) -> Result<(), String> {
 
     Ok(())
 }
-

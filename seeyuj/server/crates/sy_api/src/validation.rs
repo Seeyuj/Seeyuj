@@ -15,7 +15,10 @@ pub fn validate_command(cmd: &Command) -> Result<(), Vec<ValidationError>> {
             if *n == 0 {
                 vec![ValidationError::new("n", "Tick count must be > 0")]
             } else if *n > 10000 {
-                vec![ValidationError::new("n", "Tick count too large (max 10000)")]
+                vec![ValidationError::new(
+                    "n",
+                    "Tick count too large (max 10000)",
+                )]
             } else {
                 vec![]
             }
@@ -38,7 +41,10 @@ fn validate_create_world(cmd: &CreateWorldCmd) -> Vec<ValidationError> {
         errors.push(ValidationError::new("name", "World name cannot be empty"));
     }
     if cmd.name.len() > 64 {
-        errors.push(ValidationError::new("name", "World name too long (max 64 chars)"));
+        errors.push(ValidationError::new(
+            "name",
+            "World name too long (max 64 chars)",
+        ));
     }
 
     errors
@@ -55,7 +61,10 @@ fn validate_create_zone(cmd: &CreateZoneCmd) -> Vec<ValidationError> {
 
     if let Some(name) = &cmd.name {
         if name.len() > 64 {
-            errors.push(ValidationError::new("name", "Zone name too long (max 64 chars)"));
+            errors.push(ValidationError::new(
+                "name",
+                "Zone name too long (max 64 chars)",
+            ));
         }
     }
 
@@ -83,4 +92,3 @@ mod tests {
         assert!(result.is_err());
     }
 }
-

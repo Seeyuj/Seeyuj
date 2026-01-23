@@ -16,7 +16,9 @@ use serde::{Deserialize, Serialize};
 
 /// A simulation tick - the fundamental unit of time in the simulation.
 /// The simulation advances tick by tick, deterministically.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default,
+)]
 pub struct Tick(pub u64);
 
 impl Tick {
@@ -41,7 +43,9 @@ impl std::fmt::Display for Tick {
 
 /// Simulated time in the world (abstract units, not real-world seconds).
 /// SimTime is derived from ticks but may have different granularity.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default,
+)]
 pub struct SimTime {
     /// Total simulated time units elapsed
     pub units: u64,
@@ -144,7 +148,9 @@ impl RngSeed {
 
 /// Unique identifier for an event in the WAL.
 /// Monotonically increasing within a world. Used for crash recovery.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Default,
+)]
 pub struct EventId(pub u64);
 
 impl EventId {
@@ -264,20 +270,15 @@ impl std::fmt::Display for EntityKind {
 }
 
 /// Lifecycle state of an entity
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
 pub enum EntityState {
     /// Entity is active and will be processed
+    #[default]
     Active,
     /// Entity is dormant (not processed but persists)
     Dormant,
     /// Entity is marked for removal
     Dead,
-}
-
-impl Default for EntityState {
-    fn default() -> Self {
-        EntityState::Active
-    }
 }
 
 // ============================================================================
@@ -379,4 +380,3 @@ mod tests {
         assert_eq!(a.manhattan_distance(&b), 7);
     }
 }
-
