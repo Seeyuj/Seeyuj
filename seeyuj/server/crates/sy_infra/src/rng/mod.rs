@@ -128,7 +128,7 @@ mod tests {
 
         for _ in 0..1000 {
             let val = rng.range_i32(-10, 10);
-            assert!(val >= -10 && val <= 10);
+            assert!((-10..=10).contains(&val));
         }
     }
 }

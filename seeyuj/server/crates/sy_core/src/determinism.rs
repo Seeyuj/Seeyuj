@@ -438,8 +438,8 @@ mod tests {
             Ok(self
                 .events
                 .iter()
-                .cloned()
                 .filter(|e| e.event_id > from_id)
+                .cloned()
                 .collect())
         }
 
