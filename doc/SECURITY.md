@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document defines the security policy for the **Persistent Sandbox Worlds Platform** project.
+This document defines the security policy for the **Seeyuj** project.
 
 ## Navigation
 
@@ -106,8 +106,7 @@ This includes notably:
 
 Please report any vulnerability responsibly via:
 
-**Email:** `security@<project-name>.org`  
-*(address to be adapted before publication)*
+**Email:** `security@seeyuj.org`
 
 For general contribution rules (issues, PR, workflow), see `doc/CONTRIBUTING.md` — except for vulnerabilities, which must follow this document.
 
